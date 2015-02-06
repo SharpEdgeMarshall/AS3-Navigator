@@ -2,6 +2,7 @@ package it.sharpedge.navigator.core
 {
 	import flash.utils.Dictionary;
 	
+	import it.sharpedge.navigator.api.NavigationState;
 	import it.sharpedge.navigator.dsl.IExitStateMapping;
 	import it.sharpedge.navigator.dsl.IStateMapping;
 	
@@ -25,10 +26,10 @@ package it.sharpedge.navigator.core
 		/**
 		 * @inheritDoc
 		 */
-		public function to( state:String ):IStateMapping {
+		public function to( stateOrPath:String ):IStateMapping {
 			_toDic ||= new Dictionary();
 			
-			return _toDic[ state ] ||= new StateMapping();
+			return _toDic[ NavigationState.make( stateOrPath ).path ] ||= new StateMapping();
 		}
 	}
 }

@@ -2,12 +2,13 @@ package it.sharpedge.navigator.core
 {
 	import flash.utils.Dictionary;
 	
+	import it.sharpedge.navigator.api.NavigationState;
 	import it.sharpedge.navigator.dsl.IEnterStateFromMapping;
 	import it.sharpedge.navigator.dsl.IEnterStateMapping;
 
 	public class EnterStateMapping extends StateMapping implements IEnterStateMapping, IEnterStateFromMapping
 	{
-		private var _redirectTo : String = null;
+		private var _redirectTo : NavigationState = null;
 		private var _fromDic : Dictionary = null;
 		
 		/*============================================================================*/
@@ -25,17 +26,21 @@ package it.sharpedge.navigator.core
 		/**
 		 * @inheritDoc
 		 */
-		public function from( state:String ):IEnterStateFromMapping{
+		public function from( stateOrPath:String ):IEnterStateFromMapping{
 			_fromDic ||= new Dictionary();
 			
-			return _fromDic[ state ] ||= new EnterStateMapping();
+			return _fromDic[ NavigationState.make( stateOrPath ).path ] ||= new EnterStateMapping();
 		}
 		
 		/**
 		 * @inheritDoc
 		 */
-		public function redirectTo( state:String = null ):void {
-			_redirectTo = state;
+		public function redirectTo( stateOrPath:String = null ):void {
+			
+			// Dispose
+			if( _redirectTo ) _redirectTo.dispose();
+			
+			_redirectTo = NavigationState.make( stateOrPath ).clone();
 		}
 	}
 }
