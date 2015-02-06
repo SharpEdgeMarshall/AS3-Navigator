@@ -127,9 +127,9 @@ package it.sharpedge.navigator.api
 		public function equals( state:NavigationState ):Boolean {
 			var foreignSegments : Array = state.segments;
 			
-			if (foreignSegments.length != _segments.length) {
-				return false;
-			}
+			if ( foreignSegments.length != _segments.length ) return false;
+			
+			if( foreignSegments.path == state.path ) return true;
 			
 			// check to see if the overlapping segments match.
 			for (var i : int = foreignSegments.length - 1;i >= 0;i--) {
