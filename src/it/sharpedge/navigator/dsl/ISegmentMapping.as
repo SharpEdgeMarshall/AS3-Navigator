@@ -2,7 +2,7 @@ package it.sharpedge.navigator.dsl
 {
 	
 
-	public interface IStateMapping
+	public interface ISegmentMapping
 	{
 		/**
 		 * A list of Guards to query before execution
@@ -19,28 +19,34 @@ package it.sharpedge.navigator.dsl
 		 * @param ... guards a list of functions or Classes with approve() method
 		 * @return IStateMapping to continue mapping
 		 */
-		function addGuards( ... guards ):IStateMapping;
+		function addGuards( ... guards ):ISegmentMapping;
 		
 		/**
 		 * Remove a Guard
 		 * @param guard The guard to remove.
 		 * @return IStateMapping to continue mapping.
 		 */
-		function removeGuard( guard ):IStateMapping;
+		function removeGuard( guard ):ISegmentMapping;
 		
 		/**
 		 * Add Hooks to run during execution
 		 * @param ... hooks a list of functions or Classes with hook() method.
 		 * @return IStateMapping to continue mapping.
 		 */
-		function addHooks( ... hooks ):IStateMapping;
+		function addHooks( ... hooks ):ISegmentMapping;
 		
 		/**
 		 * Remove a Hook
 		 * @param hook The hook to remove.
 		 * @return IStateMapping to continue mapping.
 		 */
-		function removeHook( hook ):IStateMapping;
+		function removeHook( hook ):ISegmentMapping;
+		
+		/**
+		 * Set a redirect to another state
+		 * @param state The destination state.
+		 */
+		function redirectTo( state:String = null ):void;
 		
 	}
 }

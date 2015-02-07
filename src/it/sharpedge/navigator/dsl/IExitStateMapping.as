@@ -1,7 +1,7 @@
 package it.sharpedge.navigator.dsl
 {
-	public interface IExitStateMapping extends IStateMapping
+	public interface IExitStateMapping extends ISegmentMapping
 	{
-		function to( state:String ):IStateMapping;
+		function to( stateOrPath:* ):ISegmentMapping;
 	}
 }
