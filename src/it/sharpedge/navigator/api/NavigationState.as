@@ -34,14 +34,13 @@ package it.sharpedge.navigator.api
 			_path = _path.replace(/\s+/g, "-");
 			
 			// Calculate segments
-			var s : Array = _path.split(DELIMITER);			
+			_segments = _path.split(DELIMITER);			
 			// pop emtpy string off the back.
-			if (!s[s.length - 1])
-				s.pop();			
+			if (!_segments[_segments.length - 1])
+				_segments.pop();			
 			// shift empty string off the start.
-			if (!s[0])
-				s.shift();
-			_segments = s;
+			if (!_segments[0])
+				_segments.shift();
 		}
 		
 		public function get path():String {

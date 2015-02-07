@@ -1,9 +1,10 @@
 package it.sharpedge.navigator.core
 {
 	import flash.events.EventDispatcher;
-	import flash.utils.Dictionary;
 	
 	import it.sharpedge.navigator.api.NavigationState;
+	import it.sharpedge.navigator.core.mappings.EnterStateMapping;
+	import it.sharpedge.navigator.core.mappings.ExitStateMapping;
 	import it.sharpedge.navigator.debug.ILogger;
 	import it.sharpedge.navigator.dsl.IEnterStateMapping;
 	import it.sharpedge.navigator.dsl.IExitStateMapping;
@@ -11,14 +12,14 @@ package it.sharpedge.navigator.core
 
 	public class Navigator extends EventDispatcher
 	{	
-		private var _logger : ILogger;
+		internal static var _logger:ILogger;
 		
-		private var _enterMappings : Dictionary = new Dictionary();
-		private var _exitMappings : Dictionary = new Dictionary();
+		private var _enterMapping:EnterStateMapping = new EnterStateMapping( "" );
+		private var _exitMapping:ExitStateMapping = new ExitStateMapping( "" );
 		
-		private var _requestedState : NavigationState;
+		private var _requestedState:NavigationState;
 		
-		private var _currentState : NavigationState;		
+		private var _currentState:NavigationState;		
 		/**
 		 * Get the current state
 		 */
@@ -46,7 +47,8 @@ package it.sharpedge.navigator.core
 		 * @return the mapping object so that you can continue the mapping.
 		 */
 		public function onEnterTo( stateOrPath:* ):IEnterStateMapping {
-			return _enterMappings[ NavigationState.make( stateOrPath ).path ] ||= new EnterStateMapping();
+			
+			return _enterMapping.getSegmentMappingFor( NavigationState.make( stateOrPath ).segments ) as IEnterStateMapping;
 		}
 		
 		/**
@@ -55,7 +57,7 @@ package it.sharpedge.navigator.core
 		 * @return the mapping object so that you can continue the mapping.
 		 */
 		public function onExitFrom( stateOrPath:* ):IExitStateMapping {
-			return _exitMappings[ NavigationState.make( stateOrPath ).path ] ||= new ExitStateMapping();
+			return _exitMapping.getSegmentMappingFor( NavigationState.make( stateOrPath ).segments ) as IExitStateMapping;
 		}
 		
 		
