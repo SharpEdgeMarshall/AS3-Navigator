@@ -13,8 +13,8 @@ package it.sharpedge.navigator.api
 		public static const DOUBLE_WILDCARD : String = WILDCARD + WILDCARD;
 		public static const DELIMITER : String = "/";
 		
-		public static function make(stateOrPath : *) : NavigationState {
-			return stateOrPath is NavigationState ? stateOrPath : NavigationStatePool.getNavigationState(stateOrPath);
+		public static function make(stateOrPath:*, clone:Boolean=true) : NavigationState {
+			return stateOrPath is NavigationState ? (clone ? NavigationState(stateOrPath).clone(): stateOrPath) : NavigationStatePool.getNavigationState(stateOrPath);
 		}
 		
 		/*============================================================================*/
@@ -167,7 +167,7 @@ package it.sharpedge.navigator.api
 		 * 		/portfolio/editorial/84/3 + * = /editorial/84/3/*
 		 */		
 		public function append( trailingStateOrPath:* ):NavigationState {
-			return NavigationStatePool.getNavigationState(_path, make(trailingStateOrPath).path);
+			return NavigationStatePool.getNavigationState(_path, make(trailingStateOrPath,false).path);
 		}
 		
 		/**
@@ -177,7 +177,7 @@ package it.sharpedge.navigator.api
 		 * 		/portfolio/editorial/84/3 + main = /main/editorial/84/3/
 		 */	
 		public function prefix( leadingStateOrPath:* ):NavigationState {
-			return NavigationStatePool.getNavigationState( make(leadingStateOrPath), _path );
+			return NavigationStatePool.getNavigationState( make(leadingStateOrPath,false), _path );
 		}
 		
 		public function hasWildcard():Boolean {
