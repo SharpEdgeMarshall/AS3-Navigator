@@ -12,8 +12,8 @@ package it.sharpedge.navigator.core
 	{	
 		internal static var _logger:ILogger;
 		
-		private var _enterMapping:SegmentMapper = new SegmentMapper( "" );
-		private var _exitMapping:SegmentMapper = new SegmentMapper( "" );
+		private var _enterMapper:SegmentMapper = new SegmentMapper( "" );
+		private var _exitMapper:SegmentMapper = new SegmentMapper( "" );
 		
 		private var _requestedState:NavigationState;
 		
@@ -35,7 +35,7 @@ package it.sharpedge.navigator.core
 		 */
 		public function Navigator( initialState:* = "/" ) {
 			
-			_currentState = NavigationState.make( initialState ).clone();
+			_currentState = NavigationState.make( initialState );
 			
 		}
 		
@@ -46,7 +46,7 @@ package it.sharpedge.navigator.core
 		 */
 		public function onEnterTo( stateOrPath:* ):IEnterSegmentMapper {
 			
-			return _enterMapping.getSegmentMappingFor( NavigationState.make( stateOrPath ).segments );
+			return _enterMapper.getSegmentMapperFor( NavigationState.make(stateOrPath, false).segments );
 		}
 		
 		/**
@@ -55,7 +55,7 @@ package it.sharpedge.navigator.core
 		 * @return the mapping object so that you can continue the mapping.
 		 */
 		public function onExitFrom( stateOrPath:* ):IExitSegmentMapper {
-			return _exitMapping.getSegmentMappingFor( NavigationState.make( stateOrPath ).segments );
+			return _exitMapper.getSegmentMapperFor( NavigationState.make(stateOrPath, false).segments );
 		}
 		
 		
@@ -72,7 +72,7 @@ package it.sharpedge.navigator.core
 			//TODO: Handle nested request made from guards and hooks
 			
 			// Store and possibly mask the requested state
-			var requested : NavigationState = NavigationState.make(stateOrPath);
+			var requested : NavigationState = NavigationState.make( stateOrPath );
 			if (requested.hasWildcard()) {
 				requested = requested.mask( _currentState );
 				if (requested.hasWildcard()){
@@ -91,26 +91,94 @@ package it.sharpedge.navigator.core
 				return;
 			}
 			
-			executeRequest();
+			executeRequest( requested );
 			
 		}
 		
-		private function executeRequest():void {
+		private function executeRequest( requested:NavigationState ):void {
 			
+			var exitMapping : StateMapping = new StateMapping();
+			var enterMapping : StateMapping = new StateMapping();			
+			var res : Boolean = true;
+			
+			_exitMapper.getMatchingStateMapping( _currentState.segments, exitMapping );
+			
+			res = testRedirect(exitMapping);
+			if(res) return;
+			
+			_enterMapper.getMatchingStateMapping( requested.segments, enterMapping );
+			
+			res = testRedirect(enterMapping);
+			if(res) return;
+			
+			// Execute exit guards
+			//res = executeGuards(exitMapping);
+			//if(!res) return;
+			
+			// Execute enter guards
+			//res = executeGuards(enterMapping);
+			//if(!res) return;
+			
+			// Execute exit hooks
+			
+			// Switch state
+			
+			// Execute enter hooks
 			
 			
 		}
 		
-		/*private function findMatchingStates( searchState:NavigationState, statesList:Dictionary ):Array {
-			var matches : Array = new Array;
-			var ns: NavigationState = NavigationStatePool.getNavigationState();
-			for ( var state:String in statesList ) {
-				ns.path = state;
-				if( searchState.equals( ns ){
-					
+		private function testRedirect( mapping:StateMapping ):Boolean {
+			// search for redirects
+			if( mapping.redirectTo != null ){
+				redirect( mapping.redirectTo );
+				return true;
+			}		
+			return false;
+		}
+		
+		private function redirect( destination:NavigationState ):void {
+			var redEvent : NavigatorStateEvent = new NavigatorStateEvent( NavigatorStateEvent.STATE_REDIRECTING, _currentState, destination );
+			dispatchEvent(redEvent);
+			request( destination );
+		}
+		
+		private function executeGuardsAsync( ):Boolean {
+			return false;
+		}
+		
+		private function executeGuardsSync( mapping:StateMapping ):Boolean {
+			
+			for( var guard:Object in mapping.guards ){					
+				if (guard is Function)
+				{
+					if ((guard as Function)())
+						continue;
+					return false;
 				}
-			}
-		}*/
+				if (guard is Class)
+				{
+					guard = new (guard as Class);
+				}
+				if (guard.approve() == false)
+					return false;
+			}				
+
+			return true;
+		}
+		
+		private function executeHooksAsync():void{
+			
+		}
+		
+		private function executeHooksSync():void {
+			
+		}
+		
+		private function switchState():void {
+			
+		}
+			
 		
 	}
 }
