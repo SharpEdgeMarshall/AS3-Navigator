@@ -2,6 +2,8 @@ package it.sharpedge.navigator.core
 {
 	import flash.events.EventDispatcher;
 	
+	import it.sharpedge.navigator.api.IGuardAsync;
+	import it.sharpedge.navigator.api.IGuardSync;
 	import it.sharpedge.navigator.api.NavigationState;
 	import it.sharpedge.navigator.debug.ILogger;
 	import it.sharpedge.navigator.dsl.IEnterSegmentMapper;
@@ -101,12 +103,12 @@ package it.sharpedge.navigator.core
 			var enterMapping : StateMapping = new StateMapping();			
 			var res : Boolean = true;
 			
-			_exitMapper.getMatchingStateMapping( _currentState.segments, exitMapping );
+			_exitMapper.getMatchingStateMapping( _currentState.segments, requested.segments, exitMapping );
 			
 			res = testRedirect(exitMapping);
 			if(res) return;
 			
-			_enterMapper.getMatchingStateMapping( requested.segments, enterMapping );
+			_enterMapper.getMatchingStateMapping( requested.segments, _currentState.segments, enterMapping );
 			
 			res = testRedirect(enterMapping);
 			if(res) return;
@@ -143,11 +145,15 @@ package it.sharpedge.navigator.core
 			request( destination );
 		}
 		
-		private function executeGuardsAsync( ):Boolean {
+		private function onGuardAsyncCallback( result:Boolean=false ):void {
+			
+		}
+		
+		private function executeGuardAsync( guard:IGuardAsync ):Boolean {
 			return false;
 		}
 		
-		private function executeGuardsSync( mapping:StateMapping ):Boolean {
+		private function executeGuards( mapping:StateMapping ):Boolean {
 			
 			for( var guard:Object in mapping.guards ){					
 				if (guard is Function)
@@ -155,12 +161,15 @@ package it.sharpedge.navigator.core
 					if ((guard as Function)())
 						continue;
 					return false;
-				}
-				if (guard is Class)
+				} 
+				else if (guard is Class)
 				{
 					guard = new (guard as Class);
 				}
-				if (guard.approve() == false)
+				
+				if(guard is IGuardAsync)
+					executeGuardAsync( guard as IGuardAsync );
+				else if( guard is IGuardSync && !guard.approve() )
 					return false;
 			}				
 

@@ -71,14 +71,19 @@ package it.sharpedge.navigator.core
 		* @param segments The segments that will be resolved
 		* @result the resulting array of StateMappings
 		*/
-		internal function getMatchingStateMapping( segments:Array, result:StateMapping ) : void {
+		internal function getMatchingStateMapping( segments:Array, complementarySegments:Array, result:StateMapping ) : void {
 			//populate result of StateMapping objects going recursive looking for matching path			
 			//TODO: complete GLOBE Handling
 			//Still searching an endpoint
 			if( segments.length != 0){	
 				// if GLOBE add StateMapping
 				if(_stateSegment == NavigationState.DOUBLE_WILDCARD){
+					// Add general mapping
 					result.concat( _stateMapping );
+					
+					// Search for specific mapping
+					if(complementarySegments && _complementaryMappers)
+						_complementaryMappers.getMatchingStateMapping(complementarySegments, null, result);
 				}
 				
 				segments = segments.concat(); // clone for safe shifting
@@ -86,12 +91,18 @@ package it.sharpedge.navigator.core
 				
 				// First search for Wildcard	
 				if(_subMappers[ NavigationState.WILDCARD ])
-					SegmentMapper( _subMappers[ NavigationState.WILDCARD ] ).getMatchingStateMapping(segments, result);
+					SegmentMapper( _subMappers[ NavigationState.WILDCARD ] ).getMatchingStateMapping(segments, complementarySegments, result);
 				if(_subMappers[ segment ])
-					SegmentMapper( _subMappers[ segment ] ).getMatchingStateMapping(segments, result);
+					SegmentMapper( _subMappers[ segment ] ).getMatchingStateMapping(segments, complementarySegments, result);
 			
 			} else { //This is an endpoint
+				
+				// Add general mapping
 				result.concat( _stateMapping );
+				
+				// Search for specific mapping
+				if(complementarySegments && _complementaryMappers)
+					_complementaryMappers.getMatchingStateMapping(complementarySegments, null, result);				
 			}
 			
 			return;
