@@ -8,20 +8,16 @@ package it.sharpedge.navigator.core
 		// The redirect state
 		private var _redirectTo : NavigationState = null;		
 		
-		private var _allGuards:Array = null;
-		private var _syncGuards:Array = null;
-		private var _asyncGuards:Array = null;
+		private var _guards:Array = new Array();
 		
-		private var _allHooks:Array = null;
-		private var _syncHooks:Array = null;
-		private var _asyncHooks:Array = null;
+		private var _hooks:Array = new Array();
 		
 		/**
 		 * @inheritDoc
 		 */
 		public function get guards():Array
 		{
-			return _allGuards;
+			return _guards;
 		}
 		
 		/**
@@ -29,49 +25,59 @@ package it.sharpedge.navigator.core
 		 */
 		public function get hooks():Array
 		{
-			return _allHooks;
+			return _hooks;
 		}
 		
-		public function StateMapping()
+		public function get redirectTo():NavigationState
 		{
+			return _redirectTo;
 		}
 		
-		public function addGuards( ... hooks ):void
-		{
-			_allHooks = _allHooks ? _allHooks.concat.apply( null, hooks ) : new Array( hooks );
-		}
-		
-		public function addHooks( ... hooks ):void
-		{
-			_allHooks = _allHooks ? _allHooks.concat.apply( null, hooks ) : new Array( hooks );
-		}
-
-		public function removeGuard( guard : * ):void
-		{
-			if( !_allGuards ) return;
-			
-			var index : int = _allGuards.indexOf( guard );			
-			if( index == -1 ) return;
-			
-			_allGuards.splice( index, 1 );
-		}
-		
-		public function removeHook( hook : * ):void
-		{
-			if( !_allHooks ) return;
-			
-			var index : int = _allHooks.indexOf( hook );			
-			if( index == -1 ) return;
-			
-			_allHooks.splice( index, 1 );
-		}
-		
-		public function redirectTo( stateOrPath:String = null ):void {
+		public function set redirectTo( value:* ):void {
 			
 			// Dispose
 			if( _redirectTo ) _redirectTo.dispose();
 			
-			_redirectTo = NavigationState.make( stateOrPath ).clone();
+			_redirectTo = NavigationState.make( value );
+		}
+		
+		public function addGuards( ... hooks ):void
+		{
+			_guards = _guards.concat.apply( null, _guards );
+		}
+		
+		public function addHooks( ... hooks ):void
+		{
+			_hooks = _hooks.concat.apply( null, hooks );
+		}
+
+		public function removeGuard( guard : * ):void
+		{
+			if( !_guards ) return;
+			
+			var index : int = _guards.indexOf( guard );			
+			if( index == -1 ) return;
+			
+			_guards.splice( index, 1 );
+		}
+		
+		public function removeHook( hook : * ):void
+		{
+			if( !_hooks ) return;
+			
+			var index : int = _hooks.indexOf( hook );			
+			if( index == -1 ) return;
+			
+			_hooks.splice( index, 1 );
+		}
+		
+		public function concat( stateMapping:StateMapping ):void 
+		{
+			if( stateMapping.redirectTo )
+				redirectTo = stateMapping.redirectTo;
+			
+			addGuards( stateMapping.guards );
+			addHooks( stateMapping.hooks );
 		}
 	}
 }

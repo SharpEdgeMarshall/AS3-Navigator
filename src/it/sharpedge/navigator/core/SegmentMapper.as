@@ -13,20 +13,20 @@ package it.sharpedge.navigator.core
 		internal var _stateSegment:String = "";
 		
 		// Parent SegmentMapping
-		internal var _parentSegmentMapping:SegmentMapper = null;
+		internal var _parent:SegmentMapper = null;
 		
-		// SubSegmentMappings
-		internal var _subSegmentMappings:Dictionary = null;
+		// Sub SegmentMappers
+		internal var _subMappers:Dictionary = null;
 		
-		// ComplementaryMapping
-		internal var _complementaryMapping:SegmentMapper = null;
+		// Complementary SegmentMappers
+		internal var _complementaryMappers:SegmentMapper = null;
 		
 		private var _stateMapping : StateMapping = new StateMapping();
 
 		
 		public function get path():String {
-			if( _parentSegmentMapping )
-				return _parentSegmentMapping.path + _stateSegment + NavigationState.DELIMITER;
+			if( _parent )
+				return _parent.path + _stateSegment + NavigationState.DELIMITER;
 			else
 				return _stateSegment + NavigationState.DELIMITER;				
 		}
@@ -49,27 +49,52 @@ package it.sharpedge.navigator.core
 		
 		
 		/*
-		* Return the SegmentMapping matching the segments passed if not exist it'll generate it
+		* Return the SegmentMapper matching the segments passed if not exist it'll generate it
 		* @param segments The segments that will generate the mapping
-		* @return The SegmentMapping matching the segments
+		* @return The SegmentMapper matching the segments
 		*/
-		internal function getSegmentMappingFor( segments:Array ):SegmentMapper {
+		internal function getSegmentMapperFor( segments:Array ):SegmentMapper {
 			var segment:String = segments.shift();
 			
-			if(!_subSegmentMappings[ segment ])
-				addSubSegmentMapping(new SegmentMapper( segment ));
+			if(!_subMappers[ segment ])
+				addSubSegmentMapper(new SegmentMapper( segment ));
 			
 			// if there are other segments go deeper
 			if( segments.length )
-				return SegmentMapper( _subSegmentMappings[ segment ] ).getSegmentMappingFor( segments );
+				return SegmentMapper( _subMappers[ segment ] ).getSegmentMapperFor( segments );
 			else
-				return SegmentMapper( _subSegmentMappings[ segment ] );
+				return SegmentMapper( _subMappers[ segment ] );
 		}
 		
-		internal function getMatchingElements( segments:Array, result:Array ) : Array {
-			// TODO populate result of StateMapping objects going recursive looking for matching path
+	    /*
+		* Return an array of StateMapping matching the segments passed
+		* @param segments The segments that will be resolved
+		* @result the resulting array of StateMappings
+		*/
+		internal function getMatchingStateMapping( segments:Array, result:StateMapping ) : void {
+			//populate result of StateMapping objects going recursive looking for matching path			
+			//TODO: complete GLOBE Handling
+			//Still searching an endpoint
+			if( segments.length != 0){	
+				// if GLOBE add StateMapping
+				if(_stateSegment == NavigationState.DOUBLE_WILDCARD){
+					result.concat( _stateMapping );
+				}
+				
+				segments = segments.concat(); // clone for safe shifting
+				var segment:String = segments.shift();
+				
+				// First search for Wildcard	
+				if(_subMappers[ NavigationState.WILDCARD ])
+					SegmentMapper( _subMappers[ NavigationState.WILDCARD ] ).getMatchingStateMapping(segments, result);
+				if(_subMappers[ segment ])
+					SegmentMapper( _subMappers[ segment ] ).getMatchingStateMapping(segments, result);
 			
-			return null;
+			} else { //This is an endpoint
+				result.concat( _stateMapping );
+			}
+			
+			return;
 		}
 		
 		/*============================================================================*/
@@ -77,44 +102,44 @@ package it.sharpedge.navigator.core
 		/*============================================================================*/
 		
 		/*
-		 * Add a SubSegmentMapping
+		 * Add a SubSegmentMapper
 		 */
-		public function addSubSegmentMapping( segmentMapping:SegmentMapper ):void {
+		public function addSubSegmentMapper( segmentMapper:SegmentMapper ):void {
 			
 			// TODO: dispatch error or log
-			if( segmentMapping._parentSegmentMapping ) return;
+			if( segmentMapper._parent ) return;
 			
-			segmentMapping._parentSegmentMapping = this;
-			_subSegmentMappings[ segmentMapping._stateSegment ] = segmentMapping;
+			segmentMapper._parent = this;
+			_subMappers[ segmentMapper._stateSegment ] = segmentMapper;
 		}
 		
 		/*
-		* Remove a SubSegmentMapping
+		* Remove a SubSegmentMapper
 		*/
-		public function removeSubSegmentMapping( segmentMapping:SegmentMapper ):void {
+		public function removeSubSegmentMapper( segmentMapper:SegmentMapper ):void {
 			// TODO: dispatch error or log
-			if( segmentMapping._parentSegmentMapping != this ) return;
+			if( segmentMapper._parent != this ) return;
 			
-			segmentMapping._parentSegmentMapping = null;
-			delete _subSegmentMappings[ segmentMapping._stateSegment ];
+			segmentMapper._parent = null;
+			delete _subMappers[ segmentMapper._stateSegment ];
 		}
 		
 		/**
 		 * @inheritDoc
 		 */
 		public function from( stateOrPath:* ):ISegmentMapper{
-			_complementaryMapping ||= new SegmentMapper( "" );
+			_complementaryMappers ||= new SegmentMapper( "" );
 			
-			return  _complementaryMapping.getSegmentMappingFor( NavigationState.make( stateOrPath ).segments );
+			return  _complementaryMappers.getSegmentMapperFor( NavigationState.make( stateOrPath, false ).segments );
 		}
 		
 		/**
 		 * @inheritDoc
 		 */
 		public function to( stateOrPath:* ):ISegmentMapper {
-			_complementaryMapping ||= new SegmentMapper( "" );
+			_complementaryMappers ||= new SegmentMapper( "" );
 			
-			return _complementaryMapping.getSegmentMappingFor( NavigationState.make( stateOrPath ).segments );
+			return _complementaryMappers.getSegmentMapperFor( NavigationState.make( stateOrPath, false ).segments );
 		}
 		
 		/**
