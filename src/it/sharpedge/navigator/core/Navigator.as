@@ -3,19 +3,17 @@ package it.sharpedge.navigator.core
 	import flash.events.EventDispatcher;
 	
 	import it.sharpedge.navigator.api.NavigationState;
-	import it.sharpedge.navigator.core.mappings.EnterStateMapping;
-	import it.sharpedge.navigator.core.mappings.ExitStateMapping;
 	import it.sharpedge.navigator.debug.ILogger;
-	import it.sharpedge.navigator.dsl.IEnterStateMapping;
-	import it.sharpedge.navigator.dsl.IExitStateMapping;
+	import it.sharpedge.navigator.dsl.IEnterSegmentMapper;
+	import it.sharpedge.navigator.dsl.IExitSegmentMapper;
 	import it.sharpedge.navigator.events.NavigatorStateEvent;
 
 	public class Navigator extends EventDispatcher
 	{	
 		internal static var _logger:ILogger;
 		
-		private var _enterMapping:EnterStateMapping = new EnterStateMapping( "" );
-		private var _exitMapping:ExitStateMapping = new ExitStateMapping( "" );
+		private var _enterMapping:SegmentMapper = new SegmentMapper( "" );
+		private var _exitMapping:SegmentMapper = new SegmentMapper( "" );
 		
 		private var _requestedState:NavigationState;
 		
@@ -46,9 +44,9 @@ package it.sharpedge.navigator.core
 		 * @param state The state that you want to map.
 		 * @return the mapping object so that you can continue the mapping.
 		 */
-		public function onEnterTo( stateOrPath:* ):IEnterStateMapping {
+		public function onEnterTo( stateOrPath:* ):IEnterSegmentMapper {
 			
-			return _enterMapping.getSegmentMappingFor( NavigationState.make( stateOrPath ).segments ) as IEnterStateMapping;
+			return _enterMapping.getSegmentMappingFor( NavigationState.make( stateOrPath ).segments );
 		}
 		
 		/**
@@ -56,8 +54,8 @@ package it.sharpedge.navigator.core
 		 * @param state The state that you want to map.
 		 * @return the mapping object so that you can continue the mapping.
 		 */
-		public function onExitFrom( stateOrPath:* ):IExitStateMapping {
-			return _exitMapping.getSegmentMappingFor( NavigationState.make( stateOrPath ).segments ) as IExitStateMapping;
+		public function onExitFrom( stateOrPath:* ):IExitSegmentMapper {
+			return _exitMapping.getSegmentMappingFor( NavigationState.make( stateOrPath ).segments );
 		}
 		
 		
