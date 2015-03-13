@@ -3,11 +3,13 @@ package it.sharpedge.navigator.core
 	import flash.utils.Dictionary;
 	
 	import it.sharpedge.navigator.api.NavigationState;
+	import it.sharpedge.navigator.core.ns.navigator;
 	import it.sharpedge.navigator.dsl.IEnterSegmentMapper;
 	import it.sharpedge.navigator.dsl.IExitSegmentMapper;
 	import it.sharpedge.navigator.dsl.ISegmentMapper;
 	
-
+	use namespace navigator;
+	
 	public class SegmentMapper implements ISegmentMapper, IEnterSegmentMapper, IExitSegmentMapper	{
 		// The state segment this SegmentMapping belongs to
 		internal var _stateSegment:String = "";
@@ -71,7 +73,7 @@ package it.sharpedge.navigator.core
 		* @param segments The segments that will be resolved
 		* @result the resulting array of StateMappings
 		*/
-		internal function getMatchingStateMapping( segments:Array, complementarySegments:Array, result:StateMapping ) : void {
+		navigator function getMatchingStateMapping( segments:Array, complementarySegments:Array, result:StateMapping ) : void {
 			//populate result of StateMapping objects going recursive looking for matching path			
 			//TODO: complete GLOBE Handling
 			//Still searching an endpoint
