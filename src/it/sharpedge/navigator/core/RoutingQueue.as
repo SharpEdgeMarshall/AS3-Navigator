@@ -46,8 +46,8 @@ package it.sharpedge.navigator.core
 			if(_running) return;
 			
 			_running = true;
-			currentState = currentState;
-			requestedState = requestedState;
+			this.currentState = currentState;
+			this.requestedState = requestedState;
 			
 			next();
 		}

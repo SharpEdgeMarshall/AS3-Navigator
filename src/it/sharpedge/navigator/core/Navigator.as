@@ -7,6 +7,7 @@ package it.sharpedge.navigator.core
 	import it.sharpedge.navigator.core.tasks.ExecuteEnterGuardsTask;
 	import it.sharpedge.navigator.core.tasks.ExecuteExitGuardsTask;
 	import it.sharpedge.navigator.core.tasks.RetrieveMappingsTask;
+	import it.sharpedge.navigator.core.tasks.SwitchStatesTask;
 	import it.sharpedge.navigator.core.tasks.TestEnterRedirectTask;
 	import it.sharpedge.navigator.core.tasks.TestExitRedirectTask;
 	import it.sharpedge.navigator.core.tasks.TestRequestTask;
@@ -26,7 +27,8 @@ package it.sharpedge.navigator.core
 		private var _exitMapper:SegmentMapper = new SegmentMapper( "" );
 		
 		private var _requestedState:NavigationState;		
-		private var _currentState:NavigationState;		
+		private var _currentState:NavigationState;
+		
 		/**
 		 * Get the current state
 		 */
@@ -52,6 +54,7 @@ package it.sharpedge.navigator.core
 			_router.add(new TestEnterRedirectTask());
 			_router.add(new ExecuteExitGuardsTask());
 			_router.add(new ExecuteEnterGuardsTask());
+			_router.add(new SwitchStatesTask());
 			
 			// TODO listen to complete routing or failed
 			//_rounter.on();			
@@ -88,13 +91,14 @@ package it.sharpedge.navigator.core
 			
 			if(_router.running){				
 				//TODO: Handle nested request made from guards and hooks
+				return;
 			}
 			
 			// Create State
-			var requestedState : NavigationState = NavigationState.make( stateOrPath );
+			_requestedState = NavigationState.make( stateOrPath );
 			
 			// Start Router
-			_router.run(_currentState, requestedState);			
+			_router.run(_currentState, _requestedState);			
 		}
 
 	}

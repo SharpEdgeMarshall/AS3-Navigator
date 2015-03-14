@@ -15,7 +15,7 @@ package it.sharpedge.navigator
 		/* Public Properties                                                          */
 		/*============================================================================*/
 		public var navigationState : NavigationStateTest;
-
+		public var navigation : NavigationTest;
 
 	}
 }
