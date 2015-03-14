@@ -9,3 +9,4 @@ bin-release/
 .actionScriptProperties
 .flexLibProperties
 .project
+target/
