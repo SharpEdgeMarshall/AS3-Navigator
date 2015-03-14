@@ -90,11 +90,11 @@ if [ "${MAC_SA_DEBUG_APP_DMG}" != "" ]; then
 	
 	# Install mac_sa_debug.dmg
 	echo "[INFO] Install player"
-	cp -Ra /Volumes/Flash Player/*.app ./;
+	cp -Ra /Volumes/Flash\ Player/*.app ./Flash\ Player\ Debugger.app;
 	
 	# cleanup
 	echo "[INFO] Unmounting image."
-	hdiutil unmount "/Volumes/Flash Player/"
+	hdiutil unmount "/Volumes/Flash\ Player/"
 fi
 
 # cleanup
