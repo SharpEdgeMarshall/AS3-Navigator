@@ -66,15 +66,36 @@ unzip ${FP_ARCHIVE_ZIP} -d ${FP_ARCHIVE_PATH}
 # these seem to be inconsistent, "*mac_sa_debug.app.zip" and
 # "*mac_sa_debug.zip" have been notedr,
 MAC_SA_DEBUG_APP_ZIP=`find . -type f \( -iname "*mac_sa_debug*.zip" ! -iname ".*" \)`
-if [ "${MAC_SA_DEBUG_APP_ZIP}" = "" ]; then
-	echo "[ERROR] Can not find required Mac SA Debug Player ZIP."
+MAC_SA_DEBUG_APP_DMG=`find . -type f \( -iname "*mac_sa_debug*.dmg" ! -iname ".*" \)`
+if [ "${MAC_SA_DEBUG_APP_ZIP}" = "" && "${MAC_SA_DEBUG_APP_DMG}" = "" ]; then
+	echo "[ERROR] Can not find required Mac SA Debug Player."
 	exit 1
 fi
-echo "[INFO] Found Mac SA Debug Player Zip: ${MAC_SA_DEBUG_APP_ZIP}"
 
-# Unzip mac_sa_debug.app.zip
-echo "[INFO] Unzipping player"
-unzip ${MAC_SA_DEBUG_APP_ZIP}
+if [ "${MAC_SA_DEBUG_APP_ZIP}" != "" ]; then
+	echo "[INFO] Found Mac SA Debug Player Zip: ${MAC_SA_DEBUG_APP_ZIP}"
+
+	# Unzip mac_sa_debug.app.zip
+	echo "[INFO] Unzipping player"
+	unzip ${MAC_SA_DEBUG_APP_ZIP}
+
+fi
+
+if [ "${MAC_SA_DEBUG_APP_DMG}" != "" ]; then
+	echo "[INFO] Found Mac SA Debug Player Dmg: ${MAC_SA_DEBUG_APP_DMG}"
+
+	# Mount mac_sa_debug.dmg
+	echo "[INFO] Mounting image"
+	hdiutil mount ${MAC_SA_DEBUG_APP_DMG}
+	
+	# Install mac_sa_debug.dmg
+	echo "[INFO] Install player"
+	cp -Ra /Volumes/Flash Player/*.app ./;
+	
+	# cleanup
+	echo "[INFO] Unmounting image."
+	hdiutil unmount "/Volumes/Flash Player/"
+fi
 
 # cleanup
 echo "[INFO] cleaning up temp files."
@@ -82,7 +103,7 @@ rm ${FP_ARCHIVE_ZIP}
 rm -r ${FP_ARCHIVE_PATH}
 
 echo "[INFO] ------------------------------------------------------------------------"
-echo "[INFO] Flash Player Downloaded and Unzip Success"
+echo "[INFO] Flash Player Downloaded and Install Success"
 echo "[INFO] ------------------------------------------------------------------------"
 
 # done
