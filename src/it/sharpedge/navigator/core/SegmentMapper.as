@@ -194,9 +194,9 @@ package it.sharpedge.navigator.core
 		/**
 		 * @inheritDoc
 		 */
-		public function redirectTo( stateOrPath:String = null ):void {
+		public function redirectTo( stateOrPath:* = null ):void {
 			
-			_stateMapping.redirectTo( stateOrPath );
+			_stateMapping.redirectTo = NavigationState.make(stateOrPath);
 		}
 		
 	}

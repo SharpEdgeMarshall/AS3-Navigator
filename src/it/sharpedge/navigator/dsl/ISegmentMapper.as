@@ -17,7 +17,7 @@ package it.sharpedge.navigator.dsl
 		 * @param guard The guard to remove.
 		 * @return IStateMapping to continue mapping.
 		 */
-		function removeGuard( guard ):ISegmentMapper;
+		function removeGuard( guard:* ):ISegmentMapper;
 		
 		/**
 		 * Add Hooks to run during execution
@@ -31,13 +31,13 @@ package it.sharpedge.navigator.dsl
 		 * @param hook The hook to remove.
 		 * @return IStateMapping to continue mapping.
 		 */
-		function removeHook( hook ):ISegmentMapper;
+		function removeHook( hook:* ):ISegmentMapper;
 		
 		/**
 		 * Set a redirect to another state
 		 * @param state The destination state.
 		 */
-		function redirectTo( state:String = null ):void;
+		function redirectTo( state:* = null ):void;
 		
 	}
 }
