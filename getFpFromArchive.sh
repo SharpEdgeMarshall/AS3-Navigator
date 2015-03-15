@@ -34,7 +34,7 @@
 
 FP_ARCHIVE_PATH="fp_archive"
 FP_ARCHIVE_ZIP="fp_archive.zip"
-EXPECTED_ARG="<FlashPlayer Archile Url>"
+EXPECTED_ARG="<FlashPlayer Archive Url>"
 VERSION="1.0"
 
 if [ "$#" -gt 1 ]; then
