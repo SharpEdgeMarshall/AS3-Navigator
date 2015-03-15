@@ -75,7 +75,9 @@
 			    <groupId>org.eluder.coveralls</groupId>
 			    <artifactId>coveralls-maven-plugin</artifactId>
 			    <version>3.0.1</version>
-			    <configuration>
+			    <configuration>			    	
+			    	<branch>develop</branch>
+			    	<coberturaReports><file>${project.build.directory}/coverage/coverage.xml</file></coberturaReports>
 			    </configuration>
 			</plugin>
 		</plugins >

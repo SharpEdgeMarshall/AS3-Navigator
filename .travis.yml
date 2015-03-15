@@ -19,3 +19,6 @@ before_script:
   - mvn install:install-file -Dfile='./libs/mockolate-0.12.4-flex.swc' -Dversion='0.12.4' -Dclassifier=flex -Dpackaging=swc -DgroupId=mockolate -DartifactId=mockolate
 
 script: mvn test
+
+after_success:
+  - mvn coveralls:report
