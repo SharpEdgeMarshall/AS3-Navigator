@@ -18,7 +18,7 @@ package it.sharpedge.navigator
 		
 		[Test]
 		public function simpleRquest() : void {
-			var a : NavigationState = NavigationState.make("/");
+			var a : NavigationState = NavigationState.make("/anystate/");
 			
 			navigator.request(a);
 			
