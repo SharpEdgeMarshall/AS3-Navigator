@@ -1,5 +1,5 @@
 language: objective-c
-sudo:false
+sudo: false
 cache:
   directories:
   - $HOME/.m2
