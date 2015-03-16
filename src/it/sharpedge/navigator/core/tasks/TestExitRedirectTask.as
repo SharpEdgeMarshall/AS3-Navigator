@@ -8,6 +8,11 @@ package it.sharpedge.navigator.core.tasks
 	
 	public class TestExitRedirectTask extends RedirectTask implements ITask
 	{
+		public function TestExitRedirectTask()
+		{
+			
+		}
+		
 		public function run(router:RoutingQueue):void
 		{
 			testRedirect( router, router.exitMapping );

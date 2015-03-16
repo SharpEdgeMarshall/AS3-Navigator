@@ -41,9 +41,13 @@ package it.sharpedge.navigator.core
 			_redirectTo = NavigationState.make( value );
 		}
 		
-		public function addGuards( ... hooks ):void
+		public function StateMapping() {
+			
+		}
+		
+		public function addGuards( ... guards ):void
 		{
-			_guards = _guards.concat.apply( null, _guards );
+			_guards = _guards.concat.apply( null, guards );
 		}
 		
 		public function addHooks( ... hooks ):void

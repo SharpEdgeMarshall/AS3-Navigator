@@ -10,7 +10,12 @@ package it.sharpedge.navigator.core.tasks.base
 	use namespace navigator;
 	
 	public class RedirectTask
-	{		
+	{	
+		
+		public function RedirectTask() {
+			
+		}
+		
 		protected function testRedirect( router:RoutingQueue, mapping:StateMapping ):void {
 			// Search for redirects
 			if( mapping.redirectTo != null ){

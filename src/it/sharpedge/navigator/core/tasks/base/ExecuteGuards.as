@@ -14,7 +14,11 @@ package it.sharpedge.navigator.core.tasks.base
 	use namespace navigator;
 	
 	public class ExecuteGuards
-	{		
+	{	
+		public function ExecuteGuards() {
+			
+		}
+		
 		protected function validateGuards( router:RoutingQueue, mapping:StateMapping ):void {
 			var guardsAsyncHandler:GuardsAsyncHandler = new GuardsAsyncHandler( );
 			

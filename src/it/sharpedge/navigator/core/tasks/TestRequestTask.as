@@ -9,7 +9,13 @@ package it.sharpedge.navigator.core.tasks
 	use namespace routing;
 	
 	public class TestRequestTask implements ITask
-	{		
+	{	
+		
+		public function TestRequestTask()
+		{
+			
+		}
+		
 		public function run(router:RoutingQueue):void
 		{
 			if (router.requestedState.hasWildcard()) {

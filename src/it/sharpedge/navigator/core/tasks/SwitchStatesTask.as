@@ -7,6 +7,10 @@ package it.sharpedge.navigator.core.tasks
 	
 	public class SwitchStatesTask implements ITask
 	{
+		public function SwitchStatesTask()
+		{
+			
+		}
 		
 		public function run(router:RoutingQueue):void
 		{
