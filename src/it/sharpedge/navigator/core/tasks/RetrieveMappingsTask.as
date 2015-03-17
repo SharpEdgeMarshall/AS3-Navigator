@@ -23,6 +23,7 @@ package it.sharpedge.navigator.core.tasks
 			_exitMapper.getMatchingStateMapping( router.currentState.segments, router.requestedState.segments, router.exitMapping );
 			_enterMapper.getMatchingStateMapping( router.requestedState.segments, router.currentState.segments, router.enterMapping );
 			
+			router.next();
 		}
 	}
 }

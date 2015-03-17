@@ -22,7 +22,7 @@ package it.sharpedge.navigator
 			
 			navigator.request(a);
 			
-			assertThat(navigator.currentState, equalTo("/"));
+			assertThat(navigator.currentState, equalTo("/anystate/"));
 		}
 	}
 }

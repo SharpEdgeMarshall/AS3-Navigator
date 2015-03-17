@@ -18,7 +18,7 @@ package it.sharpedge.navigator.core
 		internal var _parent:SegmentMapper = null;
 		
 		// Sub SegmentMappers
-		internal var _subMappers:Dictionary = null;
+		internal var _subMappers:Dictionary = new Dictionary();
 		
 		// Complementary SegmentMappers
 		internal var _complementaryMappers:SegmentMapper = null;

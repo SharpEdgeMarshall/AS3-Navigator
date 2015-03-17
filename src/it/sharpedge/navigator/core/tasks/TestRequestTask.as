@@ -37,6 +37,8 @@ package it.sharpedge.navigator.core.tasks
 				router.stop();
 				return;
 			}
+			
+			router.next();
 		}
 	}
 }

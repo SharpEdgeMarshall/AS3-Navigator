@@ -15,6 +15,8 @@ package it.sharpedge.navigator.core.tasks
 		public function run(router:RoutingQueue):void
 		{
 			router.currentState.path = router.requestedState.path;
+			
+			router.next();
 		}
 	}
 }
