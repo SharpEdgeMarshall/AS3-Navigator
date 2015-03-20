@@ -27,10 +27,6 @@ package it.sharpedge.navigator.core.tasks
 				}
 			}
 			
-			// EVENT( STATE_REQUESTED ) This event makes it possible to add hooks and guard just in time to participate in the validation process.
-			//var reqEvent : NavigatorStateEvent = new NavigatorStateEvent( NavigatorStateEvent.STATE_REQUESTED, _currentState, requestedState );
-			//dispatchEvent(reqEvent);
-			
 			// Check for exact match of the requested and the current state
 			if ( router.currentState.equals( router.requestedState ) ) {
 				Navigator.logger.info("Already at the requested state: " + router.requestedState);

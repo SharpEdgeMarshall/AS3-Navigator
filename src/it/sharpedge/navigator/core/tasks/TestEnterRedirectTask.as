@@ -1,5 +1,6 @@
 package it.sharpedge.navigator.core.tasks
 {
+	import it.sharpedge.navigator.core.Navigator;
 	import it.sharpedge.navigator.core.RoutingQueue;
 	import it.sharpedge.navigator.core.ns.routing;
 	import it.sharpedge.navigator.core.tasks.base.RedirectTask;
@@ -9,9 +10,9 @@ package it.sharpedge.navigator.core.tasks
 	public class TestEnterRedirectTask extends RedirectTask implements ITask
 	{
 		
-		public function TestEnterRedirectTask()
+		public function TestEnterRedirectTask(navigator:Navigator)
 		{
-			
+			super(navigator);
 		}
 		
 		public function run(router:RoutingQueue):void

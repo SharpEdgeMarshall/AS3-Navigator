@@ -37,19 +37,19 @@ package it.sharpedge.navigator.core.async
 			var idx:int = _delegates.indexOf( delegate );
 			
 			if( idx != -1 ){
+				
+				_delegates.splice( idx, 1 );
+				
 				if(!valid){
 					_busy = false;
 					_valid = false;
-					_delegates = new Vector.<GuardsAsyncDelegate>();
-					dispatchEvent(new Event(""));
-				}
-				
-				_delegates.splice( idx, 1 );
+					dispatchEvent( new Event( Event.COMPLETE ) );
+				}				
 				
 				if( _delegates.length == 0 ){
 					_busy = false;
 					_valid = true;
-
+					dispatchEvent( new Event( Event.COMPLETE ) );
 				}
 			}			
 		}

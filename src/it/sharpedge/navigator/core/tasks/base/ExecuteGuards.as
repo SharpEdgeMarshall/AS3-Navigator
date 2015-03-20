@@ -1,5 +1,7 @@
 package it.sharpedge.navigator.core.tasks.base
 {
+	import flash.events.Event;
+	
 	import it.sharpedge.navigator.api.IGuardAsync;
 	import it.sharpedge.navigator.api.IGuardSync;
 	import it.sharpedge.navigator.core.Navigator;
@@ -15,12 +17,15 @@ package it.sharpedge.navigator.core.tasks.base
 	
 	public class ExecuteGuards
 	{	
+		private var guardsAsyncHandler:GuardsAsyncHandler;
+		private var router:RoutingQueue;
+		
 		public function ExecuteGuards() {
 			
 		}
 		
-		protected function validateGuards( router:RoutingQueue, mapping:StateMapping ):void {
-			var guardsAsyncHandler:GuardsAsyncHandler = new GuardsAsyncHandler( );
+		protected function validateGuards( router:RoutingQueue, mapping:StateMapping ):void {			
+			this.router = router;
 			
 			for( var guard:Object in mapping.guards ){					
 				if (guard is Function)
@@ -36,29 +41,34 @@ package it.sharpedge.navigator.core.tasks.base
 					guard = new (guard as Class);
 				}
 				
-				if(guard is IGuardAsync){
-					guard.approve( new GuardsAsyncDelegate( (guard as IGuardAsync), guardsAsyncHandler ).call );
-				} else if( guard is IGuardSync && !guard.approve() ) {
+				if( guard is IGuardSync && !guard.approve() ) {
 					invalidateRoute(router);
 					return;
-				}
+				}else if(guard is IGuardAsync){
+					guardsAsyncHandler = guardsAsyncHandler || new GuardsAsyncHandler( );
+					guard.approve( new GuardsAsyncDelegate( (guard as IGuardAsync), guardsAsyncHandler ).call );
+				} 
 
-			}
+			}			
 			
-			// Check if async handler has completed ( or has never run )
-			if( !guardsAsyncHandler.busy ) {
-				if(guardsAsyncHandler.valid)
-					router.next();
-				else
-					invalidateRoute(router);
-			}
+			if( !guardsAsyncHandler ) router.next(); // If there isn't async guard continue	
+			else if( !guardsAsyncHandler.busy ) onCompleteCallback(); // If async handler has completed already call completeCallBack
+			else guardsAsyncHandler.addEventListener( Event.COMPLETE, onCompleteCallback ); // If it's running wait
 		}
 		
-		private function completeCallback():void{
+		private function onCompleteCallback():void{
 			
+			guardsAsyncHandler.removeEventListener( Event.COMPLETE, onCompleteCallback );
+			
+			if(guardsAsyncHandler.valid) {
+				guardsAsyncHandler = null;
+				router.next();
+			} else 
+				invalidateRoute(router);
 		}
 		
 		private function invalidateRoute(router:RoutingQueue):void {
+			guardsAsyncHandler = null;
 			Navigator.logger.info("Stopped by Guard");
 			router.stop();
 		}
