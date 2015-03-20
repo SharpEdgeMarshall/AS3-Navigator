@@ -12,17 +12,10 @@ package it.sharpedge.navigator.core
 		 */
 		public static function getNavigationState( ...segments : Array ) : NavigationState
 		{
-
-			if ( _nsPool && _nsPool.length > 0 )
-			{
-				var ns : NavigationState = _nsPool.pop();
-				ns.path = segments.join(NavigationState.DELIMITER);
-				return ns;
-			}
-			else
-			{
-				return new NavigationState( segments );
-			}
+			var ns : NavigationState = ( _nsPool && _nsPool.length > 0 ) ? _nsPool.pop() : new NavigationState( );
+			ns.segments = segments;
+			
+			return ns;
 		}
 
 		/**

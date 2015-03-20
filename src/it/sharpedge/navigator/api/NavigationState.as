@@ -155,7 +155,7 @@ package it.sharpedge.navigator.api
 			
 			var ns : NavigationState = NavigationStatePool.getNavigationState();
 			var subtract : Array = segments;
-			subtract.splice(0, operand.segments.length);
+			subtract.splice(subtract.indexOf( operand.segments[0] ), operand.segments.length);
 			ns.segments = subtract;
 			return ns;
 		}
@@ -177,7 +177,7 @@ package it.sharpedge.navigator.api
 		 * 		/portfolio/editorial/84/3 + main = /main/editorial/84/3/
 		 */	
 		public function prefix( leadingStateOrPath:* ):NavigationState {
-			return NavigationStatePool.getNavigationState( make(leadingStateOrPath,false), _path );
+			return NavigationStatePool.getNavigationState( make(leadingStateOrPath,false).path, _path);
 		}
 		
 		public function hasWildcard():Boolean {
@@ -200,10 +200,11 @@ package it.sharpedge.navigator.api
 				}
 			}
 
-			return NavigationStatePool.getNavigationState( unmaskedSegments );
+			return NavigationStatePool.getNavigationState.apply( null, unmaskedSegments );
 		}
 		
-		public function dispose():void {
+		public function dispose():void {			
+			path = "/";
 			NavigationStatePool.disposeNavigationState( this );
 		}
 		

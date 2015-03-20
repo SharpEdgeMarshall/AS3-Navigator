@@ -17,12 +17,21 @@ package it.sharpedge.navigator
 		}
 		
 		[Test]
-		public function simpleRquest() : void {
+		public function simpleRequest() : void {
 			var a : NavigationState = NavigationState.make("/anystate/");
 			
 			navigator.request(a);
 			
 			assertThat(navigator.currentState, equalTo("/anystate/"));
+		}
+		
+		[Test]
+		public function sameRequest() : void {
+			var a : NavigationState = NavigationState.make("/");
+			
+			navigator.request(a);
+			
+			assertThat(navigator.currentState, equalTo("/"));
 		}
 	}
 }
