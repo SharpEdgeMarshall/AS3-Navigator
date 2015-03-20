@@ -1,5 +1,6 @@
 package it.sharpedge.navigator.core
 {
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	
 	import it.sharpedge.navigator.api.NavigationState;
@@ -12,14 +13,17 @@ package it.sharpedge.navigator.core
 	import it.sharpedge.navigator.core.tasks.TestExitRedirectTask;
 	import it.sharpedge.navigator.core.tasks.TestRequestTask;
 	import it.sharpedge.navigator.debug.ILogger;
+	import it.sharpedge.navigator.debug.TraceLogger;
 	import it.sharpedge.navigator.dsl.IEnterSegmentMapper;
 	import it.sharpedge.navigator.dsl.IExitSegmentMapper;
+	import it.sharpedge.navigator.events.NavigatorStateEvent;
+	import it.sharpedge.navigator.events.RoutingQueueEvent;
 
 	use namespace navigator;
 	
 	public class Navigator extends EventDispatcher
 	{	
-		navigator static var logger:ILogger;
+		navigator static var logger:ILogger = new TraceLogger();
 		
 		private var _router:RoutingQueue = new RoutingQueue();
 		
@@ -50,14 +54,14 @@ package it.sharpedge.navigator.core
 			
 			_router.add(new TestRequestTask());
 			_router.add(new RetrieveMappingsTask(_exitMapper, _enterMapper));
-			_router.add(new TestExitRedirectTask());
-			_router.add(new TestEnterRedirectTask());
+			_router.add(new TestExitRedirectTask(this));
+			_router.add(new TestEnterRedirectTask(this));
 			_router.add(new ExecuteExitGuardsTask());
 			_router.add(new ExecuteEnterGuardsTask());
 			_router.add(new SwitchStatesTask());
 			
-			// TODO listen to complete routing or failed
-			//_rounter.on();			
+			_router.addEventListener( RoutingQueueEvent.COMPLETE, onRoutingComplete );
+			_router.addEventListener( RoutingQueueEvent.ABORT, onRoutingComplete );
 		}
 		
 		/**
@@ -97,8 +101,19 @@ package it.sharpedge.navigator.core
 			// Create State
 			_requestedState = NavigationState.make( stateOrPath );
 			
+			var navEvent : NavigatorStateEvent = new NavigatorStateEvent( NavigatorStateEvent.STATE_REQUESTED, _currentState, _requestedState );
+			dispatchEvent(navEvent);
+			
 			// Start Router
 			_router.run(_currentState, _requestedState);			
+		}
+		
+		
+		
+		protected function onRoutingComplete(event:Event):void
+		{
+			var navEvent : NavigatorStateEvent = new NavigatorStateEvent( NavigatorStateEvent.COMPLETED, _currentState, _requestedState );
+			dispatchEvent(navEvent);			
 		}
 
 	}
