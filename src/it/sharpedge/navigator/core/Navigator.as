@@ -6,7 +6,9 @@ package it.sharpedge.navigator.core
 	import it.sharpedge.navigator.api.NavigationState;
 	import it.sharpedge.navigator.core.ns.navigator;
 	import it.sharpedge.navigator.core.tasks.ExecuteEnterGuardsTask;
+	import it.sharpedge.navigator.core.tasks.ExecuteEnterHooksTask;
 	import it.sharpedge.navigator.core.tasks.ExecuteExitGuardsTask;
+	import it.sharpedge.navigator.core.tasks.ExecuteExitHooksTask;
 	import it.sharpedge.navigator.core.tasks.RetrieveMappingsTask;
 	import it.sharpedge.navigator.core.tasks.SwitchStatesTask;
 	import it.sharpedge.navigator.core.tasks.TestEnterRedirectTask;
@@ -58,7 +60,9 @@ package it.sharpedge.navigator.core
 			_router.add(new TestEnterRedirectTask(this));
 			_router.add(new ExecuteExitGuardsTask());
 			_router.add(new ExecuteEnterGuardsTask());
+			_router.add(new ExecuteExitHooksTask());
 			_router.add(new SwitchStatesTask());
+			_router.add(new ExecuteEnterHooksTask());
 			
 			_router.addEventListener( RoutingQueueEvent.COMPLETE, onRoutingComplete );
 			_router.addEventListener( RoutingQueueEvent.ABORT, onRoutingComplete );

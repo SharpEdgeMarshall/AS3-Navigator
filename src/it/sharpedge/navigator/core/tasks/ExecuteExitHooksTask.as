@@ -6,16 +6,16 @@ package it.sharpedge.navigator.core.tasks
 
 	use namespace routing;
 	
-	public class ExecuteEnterHooksTask extends ExecuteHooks implements ITask
+	public class ExecuteExitHooksTask extends ExecuteHooks implements ITask
 	{		
-		public function ExecuteEnterHooksTask()
+		public function ExecuteExitHooksTask()
 		{		
 			
 		}
 		
 		public function run(router:RoutingQueue):void
 		{
-			executeHooks( router, router.enterMapping );
+			executeHooks( router, router.exitMapping );
 		}
 	}
 }
