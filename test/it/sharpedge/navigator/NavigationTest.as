@@ -1,7 +1,9 @@
 package it.sharpedge.navigator
 {
+	import it.sharpedge.navigator.api.IHookSync;
 	import it.sharpedge.navigator.api.NavigationState;
 	import it.sharpedge.navigator.core.Navigator;
+	import it.sharpedge.navigator.hooks.TestSyncHook;
 	
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
@@ -22,7 +24,7 @@ package it.sharpedge.navigator
 			
 			navigator.request(a);
 			
-			assertThat(navigator.currentState, equalTo("/anystate/"));
+			assertThat("The currentState changed to request state", navigator.currentState, equalTo("/anystate/"));
 		}
 		
 		[Test]
@@ -31,7 +33,23 @@ package it.sharpedge.navigator
 			
 			navigator.request(a);
 			
+			// TODO Capture the stop on TestTask
 			assertThat(navigator.currentState, equalTo("/"));
+		}
+		
+		[Test]
+		public function syncHook() : void {
+			
+			var a : NavigationState = NavigationState.make("/");			
+			var b : NavigationState = NavigationState.make("/anyState/");
+			
+			var hook:TestSyncHook = new TestSyncHook();
+			
+			navigator.onExitFrom(a).to(b).addHooks(hook);
+			
+			navigator.request(b);
+			
+			assertThat("Hook has been called", hook.called, equalTo(1));
 		}
 	}
 }

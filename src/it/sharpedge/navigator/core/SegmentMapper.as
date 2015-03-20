@@ -56,6 +56,9 @@ package it.sharpedge.navigator.core
 		* @return The SegmentMapper matching the segments
 		*/
 		internal function getSegmentMapperFor( segments:Array ):SegmentMapper {
+			if( !segments.length )
+				return this;
+			
 			var segment:String = segments.shift();
 			
 			if(!_subMappers[ segment ])

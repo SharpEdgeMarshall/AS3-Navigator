@@ -27,7 +27,7 @@ package it.sharpedge.navigator.core.tasks.base
 		protected function validateGuards( router:RoutingQueue, mapping:StateMapping ):void {			
 			this.router = router;
 			
-			for( var guard:Object in mapping.guards ){					
+			for each( var guard:Object in mapping.guards ){					
 				if (guard is Function)
 				{
 					if ((guard as Function)())
@@ -46,7 +46,7 @@ package it.sharpedge.navigator.core.tasks.base
 					return;
 				}else if(guard is IGuardAsync){
 					guardsAsyncHandler = guardsAsyncHandler || new GuardsAsyncHandler( );
-					guard.approve( new GuardsAsyncDelegate( (guard as IGuardAsync), guardsAsyncHandler ).call );
+					(guard as IGuardAsync).approve( new GuardsAsyncDelegate( (guard as IGuardAsync), guardsAsyncHandler ).call );
 				} 
 
 			}			

@@ -1,8 +1,11 @@
 package it.sharpedge.navigator
 {
 	import it.sharpedge.navigator.api.NavigationState;
+	import it.sharpedge.navigator.core.NavigationStatePool;
 	
 	import org.hamcrest.assertThat;
+	import org.hamcrest.core.IsNotMatcher;
+	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.sameInstance;
 
@@ -99,13 +102,25 @@ package it.sharpedge.navigator
 		}
 		
 		[Test]
-		public function disposeAndPool() : void {
+		public function dispose() : void {
 			var a : NavigationState = NavigationState.make("anyState");
 			a.dispose();			
-			assertThat("dispose a path reset", a.path, equalTo(new NavigationState("/")));
+			assertThat("dispose a path reset", a.path, equalTo(new NavigationState("/")));			
+		}
+		
+		[Test]
+		public function navigationStatesPool() : void {
+			var a : NavigationState = NavigationState.make("anyState");
+			a.dispose();
 			
 			var b : NavigationState = NavigationState.make("anyNewState");		
 			assertThat("b === a because is taken from NavigationStatePool", a, sameInstance(b));
+			
+			b.dispose();
+			NavigationStatePool.dispose();
+			
+			var c : NavigationState = NavigationState.make("anyOtherNewState");		
+			assertThat("b !== a because NavigationStatePool was disposed", b, not( sameInstance(c) ));
 		}
 	}
 }
