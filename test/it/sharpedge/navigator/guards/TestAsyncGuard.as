@@ -1,18 +1,21 @@
-package it.sharpedge.navigator.hooks
+package it.sharpedge.navigator.guards
 {
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
-	import it.sharpedge.navigator.api.IHookAsync;
+	import it.sharpedge.navigator.api.IGuardAsync;
 	
-	public class TestAsyncHook implements IHookAsync
+	public class TestAsyncGuard implements IGuardAsync
 	{
 		private var _called:int = 0;
 		private var _timer:Timer;
 		private var _callback:Function;
+		private var _willPass:Boolean;
 		
-		public function TestAsyncHook()
+		public function TestAsyncGuard(willPass:Boolean)
 		{
+			_willPass = willPass;
+			
 			_timer = new Timer( 100, 0 );
 			_timer.addEventListener(TimerEvent.TIMER, onTime);
 		}
@@ -21,8 +24,8 @@ package it.sharpedge.navigator.hooks
 		{
 			return _called;
 		}
-		
-		public function hook(callback:Function):void
+
+		public function approve(callback:Function):void
 		{
 			_callback = callback;
 			_timer.start();
@@ -33,9 +36,7 @@ package it.sharpedge.navigator.hooks
 			_timer.reset();
 			
 			_called++;
-			_callback();			
+			_callback(_willPass);			
 		}		
 	}
 }
-
-
