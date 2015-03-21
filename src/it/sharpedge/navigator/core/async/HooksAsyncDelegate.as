@@ -7,7 +7,7 @@ package it.sharpedge.navigator.core.async
 		private var _hook:IHookAsync;
 		private var _hooksHandler:HooksAsyncHandler;		
 		
-		public function get guard():IHookAsync
+		public function get hook():IHookAsync
 		{
 			return _hook;
 		}

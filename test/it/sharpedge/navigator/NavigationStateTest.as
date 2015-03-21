@@ -4,7 +4,6 @@ package it.sharpedge.navigator
 	import it.sharpedge.navigator.core.NavigationStatePool;
 	
 	import org.hamcrest.assertThat;
-	import org.hamcrest.core.IsNotMatcher;
 	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.sameInstance;

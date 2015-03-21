@@ -51,7 +51,7 @@ package it.sharpedge.navigator.core.tasks.base
 			else hooksAsyncHandler.addEventListener( Event.COMPLETE, onCompleteCallback ); // If it's running wait
 		}
 		
-		private function onCompleteCallback():void{
+		private function onCompleteCallback(ev:Event=null):void{
 			
 			hooksAsyncHandler.removeEventListener( Event.COMPLETE, onCompleteCallback );
 			

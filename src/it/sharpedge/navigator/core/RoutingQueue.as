@@ -85,8 +85,8 @@ package it.sharpedge.navigator.core
 			_running = false;
 			currentState = null;
 			requestedState = requestedState;
-			exitMapping = null;
-			enterMapping = null;
+			exitMapping = new StateMapping();
+			enterMapping = new StateMapping();
 			_currentTaskIDX = -1;						
 		}
 		
