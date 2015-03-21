@@ -118,6 +118,26 @@ package it.sharpedge.navigator.core
 		/*============================================================================*/
 		
 		/*
+		 * Clear mappings
+		 * @param subState Should go in deep cleaning also all subStates
+		 */
+		public function clearMapping( clearSubStates:Boolean = false ):void {
+			
+			if( clearSubStates ) {
+				var mapper:SegmentMapper;			
+				// Clear subMappers
+				for each( mapper in _subMappers )
+				{
+					mapper.clearMapping();
+				}
+				// Clear complementaryMappers
+				_complementaryMappers = null;
+			}	
+			
+			_stateMapping.clear();			
+		}
+		
+		/*
 		 * Add a SubSegmentMapper
 		 */
 		public function addSubSegmentMapper( segmentMapper:SegmentMapper ):void {

@@ -43,6 +43,14 @@ package it.sharpedge.navigator.core
 			return _currentState.clone();
 		}
 		
+		/**
+		 * Get the current running state
+		 */
+		public function get running() : Boolean {
+			
+			return _router.running;
+		}
+		
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
@@ -66,6 +74,18 @@ package it.sharpedge.navigator.core
 			
 			_router.addEventListener( RoutingQueueEvent.COMPLETE, onRoutingComplete );
 			_router.addEventListener( RoutingQueueEvent.ABORT, onRoutingComplete );
+		}
+		
+		/**
+		 * Remove all mappings
+		 */
+		public function clearMappings():void {
+			if( _router.running ) {
+				logger.warn("Cannot clear mappings while router is running");
+			}
+				
+			_exitMapper.clearMapping( true );
+			_enterMapper.clearMapping( true );
 		}
 		
 		/**

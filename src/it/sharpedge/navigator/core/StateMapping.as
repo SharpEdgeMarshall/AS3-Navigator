@@ -45,6 +45,12 @@ package it.sharpedge.navigator.core
 			
 		}
 		
+		public function clear():void {
+			_guards = new Array();
+			_hooks = new Array();
+			_redirectTo = null;
+		}
+		
 		public function addGuards( ... guards ):void
 		{
 			_guards = _guards.concat.apply( null, guards );
@@ -56,9 +62,7 @@ package it.sharpedge.navigator.core
 		}
 
 		public function removeGuard( guard : * ):void
-		{
-			if( !_guards ) return;
-			
+		{		
 			var index : int = _guards.indexOf( guard );			
 			if( index == -1 ) return;
 			
@@ -66,9 +70,7 @@ package it.sharpedge.navigator.core
 		}
 		
 		public function removeHook( hook : * ):void
-		{
-			if( !_hooks ) return;
-			
+		{			
 			var index : int = _hooks.indexOf( hook );			
 			if( index == -1 ) return;
 			
