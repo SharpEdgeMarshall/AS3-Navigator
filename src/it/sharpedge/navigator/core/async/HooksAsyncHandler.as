@@ -26,7 +26,7 @@ package it.sharpedge.navigator.core.async
 			_busy = true;
 		}
 		
-		public function notifyValidation( delegate:HooksAsyncDelegate ):void {
+		public function notifyExecution( delegate:HooksAsyncDelegate ):void {
 			if(!_busy) return;
 			
 			var idx:int = _delegates.indexOf( delegate );

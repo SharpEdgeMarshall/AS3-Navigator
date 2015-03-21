@@ -20,8 +20,8 @@ package it.sharpedge.navigator.core.async
 			hooksHandler.addDelegate( this );
 		}
 
-		public function call( valid:Boolean ):void {
-			_hooksHandler.notifyValidation( this );
+		public function call( ):void {
+			_hooksHandler.notifyExecution( this );
 		}
 	}
 }
