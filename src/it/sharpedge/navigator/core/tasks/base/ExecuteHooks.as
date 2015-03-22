@@ -38,10 +38,10 @@ package it.sharpedge.navigator.core.tasks.base
 				}
 				
 				if( hook is IHookSync ) {
-					( hook as IHookSync ).hook();
+					( hook as IHookSync ).execute();
 				}else if(hook is IHookAsync){
 					hooksAsyncHandler = hooksAsyncHandler || new HooksAsyncHandler( );
-					(hook as IHookAsync).hook( new HooksAsyncDelegate( (hook as IHookAsync), hooksAsyncHandler ).call );
+					(hook as IHookAsync).execute( new HooksAsyncDelegate( (hook as IHookAsync), hooksAsyncHandler ).call );
 				} 
 
 			}			

@@ -22,7 +22,7 @@ package it.sharpedge.navigator.hooks
 			return _called;
 		}
 		
-		public function hook(callback:Function):void
+		public function execute(callback:Function):void
 		{
 			_callback = callback;
 			_timer.start();

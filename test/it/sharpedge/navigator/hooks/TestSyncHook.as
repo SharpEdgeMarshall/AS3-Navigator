@@ -15,7 +15,7 @@ package it.sharpedge.navigator.hooks
 			return _called;
 		}
 
-		public function hook():void
+		public function execute():void
 		{
 			_called++;
 		}
