@@ -19,6 +19,7 @@ package it.sharpedge.navigator
 		private var a : NavigationState;			
 		private var b : NavigationState;
 		private var c : NavigationState;
+		private var d : NavigationState;
 		
 		[Before]
 		public function initNavigator() : void {
@@ -27,6 +28,7 @@ package it.sharpedge.navigator
 			a = NavigationState.make("/");			
 			b = NavigationState.make("/anyState/");
 			c = NavigationState.make("/anyOtherState/");
+			d = NavigationState.make("/*/anySubState/");
 		}
 		
 		[After]
@@ -45,12 +47,23 @@ package it.sharpedge.navigator
 		}
 		
 		[Test]
+		public function maskRequest() : void {
+			
+			navigator.request(d);			
+			assertThat("State doesn't change because masking fails", navigator.currentState.path, equalTo(a.path));
+			
+			navigator.request(b);
+			navigator.request(d);			
+			assertThat("State change because masking success", navigator.currentState.path, equalTo(d.mask(b).path));
+		}
+		
+		[Test]
 		public function sameRequest() : void {
 			
 			navigator.request(a);
 			
 			// TODO Capture the stop on TestTask
-			assertThat(navigator.currentState.path, equalTo(a.path));
+			assertThat("State doesn't change", navigator.currentState.path, equalTo(a.path));
 		}
 		
 		[Test]

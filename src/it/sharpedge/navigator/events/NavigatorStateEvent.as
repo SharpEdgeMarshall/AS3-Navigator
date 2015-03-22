@@ -8,7 +8,7 @@ package it.sharpedge.navigator.events
 	{		
 		public static const STATE_REQUESTED : String = "STATE_REQUESTED";
 		public static const STATE_REDIRECTING : String = "STATE_REDIRECTING";
-		public static const GUARD_LOCK : String = "GUARD_LOCK";
+		public static const GUARD_BLOCK : String = "GUARD_BLOCK";
 		public static const STATE_CHANGING : String = "STATE_CHANGING";
 		public static const STATE_CHANGED : String = "STATE_CHANGED";
 		public static const COMPLETED : String = "COMPLETED";

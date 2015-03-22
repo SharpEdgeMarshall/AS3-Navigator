@@ -19,7 +19,7 @@ package it.sharpedge.navigator.core.tasks.base
 		public function RedirectTask(navigator:Navigator) {
 			_nav = navigator;
 		}
-		
+		// TODO Detect redirect loop
 		protected function testRedirect( router:RoutingQueue, mapping:StateMapping ):void {
 			// Search for redirects
 			if( mapping.redirectTo != null ){

@@ -25,7 +25,7 @@ package it.sharpedge.navigator.core
 	
 	public class Navigator extends EventDispatcher
 	{	
-		navigator static var logger:ILogger = new TraceLogger();
+		navigator static var _logger:ILogger;
 		
 		private var _router:RoutingQueue = new RoutingQueue();
 		
@@ -35,6 +35,11 @@ package it.sharpedge.navigator.core
 		private var _requestedState:NavigationState;		
 		private var _currentState:NavigationState;
 		
+		navigator static function get logger():ILogger
+		{
+			return navigator::_logger;
+		}
+
 		/**
 		 * Get the current state
 		 */
@@ -57,8 +62,11 @@ package it.sharpedge.navigator.core
 		
 		/**
 		 * Creates a Navigator
+		 * @param initialState The initial sate of the navigator
 		 */
-		public function Navigator( initialState:* = "/" ) {
+		public function Navigator( initialState:* = "/", logger:ILogger = null ) {
+			
+			_logger = logger || new TraceLogger();
 			
 			_currentState = NavigationState.make( initialState );
 			
@@ -118,7 +126,7 @@ package it.sharpedge.navigator.core
 			}
 			
 			if(_router.running){				
-				//TODO: Handle nested request made from guards and hooks
+				logger.error("Cannot handle requests while a request is already being processed");
 				return;
 			}
 			
