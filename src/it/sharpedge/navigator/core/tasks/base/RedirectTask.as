@@ -1,5 +1,6 @@
 package it.sharpedge.navigator.core.tasks.base
 {
+	import it.sharpedge.navigator.api.NavigationState;
 	import it.sharpedge.navigator.core.Navigator;
 	import it.sharpedge.navigator.core.RoutingQueue;
 	import it.sharpedge.navigator.core.StateMapping;
@@ -22,19 +23,22 @@ package it.sharpedge.navigator.core.tasks.base
 		protected function testRedirect( router:RoutingQueue, mapping:StateMapping ):void {
 			// Search for redirects
 			if( mapping.redirectTo != null ){
+				
+				var cur:NavigationState = router.currentState;
+				var req:NavigationState = router.requestedState;
+				
 				// Stop routing
 				router.reset();
 				
-				Navigator.logger.info("Redirecting: " + router.requestedState + " -> " + mapping.redirectTo );
+				Navigator.logger.info("Redirecting: " + req + " -> " + mapping.redirectTo );
 				// Dispatch REIDIRECT Event
-				var redEvent : NavigatorStateEvent = new NavigatorStateEvent( NavigatorStateEvent.STATE_REDIRECTING, router.currentState, mapping.redirectTo );
+				var redEvent : NavigatorStateEvent = new NavigatorStateEvent( NavigatorStateEvent.STATE_REDIRECTING, cur, mapping.redirectTo );
 				_nav.dispatchEvent(redEvent);
 				
 				// Restart routing
-				router.run( router.currentState, mapping.redirectTo );
-			}
-			
-			router.next();
+				router.run( cur, mapping.redirectTo );
+
+			} else router.next();
 		}
 	}
 }

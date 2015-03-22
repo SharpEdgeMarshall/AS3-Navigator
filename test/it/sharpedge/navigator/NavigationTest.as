@@ -18,6 +18,7 @@ package it.sharpedge.navigator
 		private var navigator:Navigator;
 		private var a : NavigationState;			
 		private var b : NavigationState;
+		private var c : NavigationState;
 		
 		[Before]
 		public function initNavigator() : void {
@@ -25,6 +26,7 @@ package it.sharpedge.navigator
 			
 			a = NavigationState.make("/");			
 			b = NavigationState.make("/anyState/");
+			c = NavigationState.make("/anyOtherState/");
 		}
 		
 		[After]
@@ -48,7 +50,17 @@ package it.sharpedge.navigator
 			navigator.request(a);
 			
 			// TODO Capture the stop on TestTask
-			assertThat(navigator.currentState, equalTo("/"));
+			assertThat(navigator.currentState.path, equalTo(a.path));
+		}
+		
+		[Test]
+		public function redirect() : void {
+			
+			navigator.onExitFrom(a).to(b).redirectTo(c);
+			
+			navigator.request(b);
+
+			assertThat(navigator.currentState.path, equalTo(c.path));
 		}
 		
 		[Test]
