@@ -16,6 +16,6 @@ package it.sharpedge.navigator
 		/*============================================================================*/
 		public var navigationState : NavigationStateTest;
 		public var navigation : NavigationTest;
-
+		public var segmentMapper : SegmentMapperTest;
 	}
 }

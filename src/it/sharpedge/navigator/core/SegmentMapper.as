@@ -11,8 +11,11 @@ package it.sharpedge.navigator.core
 	use namespace navigator;
 	
 	public class SegmentMapper implements ISegmentMapper, IEnterSegmentMapper, IExitSegmentMapper	{
+		
+		private static const DW_STATE:NavigationState = NavigationState.make(NavigationState.DOUBLE_WILDCARD);
+		
 		// The state segment this SegmentMapping belongs to
-		internal var _stateSegment:String = "";
+		internal var _stateSegment:String;
 		
 		// Parent SegmentMapping
 		internal var _parent:SegmentMapper = null;
@@ -40,9 +43,9 @@ package it.sharpedge.navigator.core
 		/**
 		 * Creates a State Mapping
 		 */
-		public function SegmentMapper( stateSegment:String )
+		public function SegmentMapper( stateSegment:* )
 		{
-			_stateSegment = stateSegment;
+			_stateSegment = NavigationState.make(stateSegment).segments[0] || "";
 		}
 		
 		/*============================================================================*/
@@ -55,7 +58,7 @@ package it.sharpedge.navigator.core
 		* @param segments The segments that will generate the mapping
 		* @return The SegmentMapper matching the segments
 		*/
-		internal function getSegmentMapperFor( segments:Array ):SegmentMapper {
+		navigator function getSegmentMapperFor( segments:Array ):SegmentMapper {
 			if( !segments.length )
 				return this;
 			
@@ -82,7 +85,7 @@ package it.sharpedge.navigator.core
 			//Still searching an endpoint
 			if( segments.length != 0){	
 				// if GLOBE add StateMapping
-				if(_stateSegment == NavigationState.DOUBLE_WILDCARD){
+				if(DW_STATE.equals( NavigationState.make(_stateSegment) )){
 					// Add general mapping
 					result.concat( _stateMapping );
 					
@@ -105,7 +108,7 @@ package it.sharpedge.navigator.core
 				// Add general mapping
 				result.concat( _stateMapping );
 				
-				// Search for specific mapping
+				// Search for specific mapping (from/to-to/from)
 				if(complementarySegments && _complementaryMappers)
 					_complementaryMappers.getMatchingStateMapping(complementarySegments, null, result);				
 			}
