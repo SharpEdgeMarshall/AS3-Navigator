@@ -2,6 +2,8 @@ package it.sharpedge.navigator
 {
 	import it.sharpedge.navigator.api.NavigationState;
 	import it.sharpedge.navigator.core.Navigator;
+	import it.sharpedge.navigator.core.ns.navigator;
+	import it.sharpedge.navigator.debug.CountLogger;
 	import it.sharpedge.navigator.events.NavigatorStateEvent;
 	import it.sharpedge.navigator.guards.TestAsyncGuard;
 	import it.sharpedge.navigator.guards.TestSyncGuard;
@@ -12,6 +14,8 @@ package it.sharpedge.navigator
 	import org.flexunit.async.Async;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
+	
+	use namespace navigator;
 
 	public class NavigationTest
 	{
@@ -24,7 +28,8 @@ package it.sharpedge.navigator
 		
 		[Before]
 		public function initNavigator() : void {
-			navigator = new Navigator();
+			navigator = new Navigator("/");
+			Navigator.logger = new CountLogger();
 			
 			a = NavigationState.make("/");			
 			b = NavigationState.make("/anyState/");
@@ -47,9 +52,11 @@ package it.sharpedge.navigator
 		[Test]
 		public function simpleRequest() : void {
 			
-			navigator.request(b);
-			
+			navigator.request(b);			
 			assertThat("The currentState changed to request state", navigator.currentState.path, equalTo(b.path));
+			
+			navigator.request(null);
+			assertThat("null request fails", (Navigator.logger as CountLogger)._error, equalTo(1));
 		}
 		
 		[Test]

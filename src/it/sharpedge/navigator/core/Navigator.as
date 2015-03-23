@@ -25,7 +25,17 @@ package it.sharpedge.navigator.core
 	
 	public class Navigator extends EventDispatcher
 	{	
-		navigator static var _logger:ILogger;
+		private static var _logger:ILogger = new TraceLogger();
+		
+		navigator static function set logger(value:ILogger):void
+		{
+			_logger = value;
+		}
+
+		navigator static function get logger():ILogger
+		{
+			return _logger;
+		}
 		
 		private var _router:RoutingQueue = new RoutingQueue();
 		
@@ -33,12 +43,7 @@ package it.sharpedge.navigator.core
 		private var _exitMapper:SegmentMapper = new SegmentMapper( "" );
 		
 		private var _requestedState:NavigationState;		
-		private var _currentState:NavigationState;
-		
-		navigator static function get logger():ILogger
-		{
-			return navigator::_logger;
-		}
+		private var _currentState:NavigationState;		
 
 		/**
 		 * Get the current state
@@ -64,9 +69,7 @@ package it.sharpedge.navigator.core
 		 * Creates a Navigator
 		 * @param initialState The initial sate of the navigator
 		 */
-		public function Navigator( initialState:* = "/", logger:ILogger = null ) {
-			
-			_logger = logger || new TraceLogger();
+		public function Navigator( initialState:* = "/" ) {
 			
 			_currentState = NavigationState.make( initialState );
 			
