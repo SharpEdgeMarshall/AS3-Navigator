@@ -1,7 +1,6 @@
 package it.sharpedge.navigator
 {
 	import it.sharpedge.navigator.api.NavigationState;
-	import it.sharpedge.navigator.core.Navigator;
 	import it.sharpedge.navigator.core.SegmentMapper;
 	import it.sharpedge.navigator.core.StateMapping;
 	import it.sharpedge.navigator.core.ns.navigator;

@@ -5,6 +5,7 @@ package it.sharpedge.navigator
 	
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.not;
+	import org.hamcrest.core.throws;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.sameInstance;
 
@@ -35,6 +36,10 @@ package it.sharpedge.navigator
 			var b : NavigationState = new NavigationState("/anyState/");
 			assertThat("the equals method works on single segmented paths", a.equals(b), equalTo(true));
 			
+			a = new NavigationState("/anyState/");
+			b = new NavigationState("/anyOtherState/");
+			assertThat("the equals method works on single segmented paths", a.equals(b), equalTo(false));
+			
 			a = new NavigationState("a", "b", "c");
 			b = new NavigationState("a/b/c");
 			assertThat("the equals method works on multi segmented paths", a.equals(b), equalTo(true));
@@ -52,8 +57,23 @@ package it.sharpedge.navigator
 		public function containment() : void {
 			var a : NavigationState = new NavigationState("anyState");
 			var b : NavigationState = new NavigationState("/anyState/subState");
-			assertThat("a contains b", a.contains(b), equalTo(false));
-			assertThat("b does not contain a", b.contains(a), equalTo(true));
+			var c : NavigationState = new NavigationState("/anyOtherState/subState");
+			assertThat("a does not contain b", a.contains(b), equalTo(false));
+			assertThat("b does not contain c", b.contains(c), equalTo(false));
+			assertThat("b contains a", b.contains(a), equalTo(true));
+		}
+		
+		[Test]
+		public function length() : void {			
+			var a : NavigationState = new NavigationState("/anyState/subState");
+			var b : NavigationState = new NavigationState("anyState");
+			
+			assertThat("Get length", a.length, equalTo(2));
+			
+			a.length = 1;
+			assertThat("Set length", a.path, equalTo(b.path));
+			
+			assertThat("Throw Error if length > than segments", function():void{ a.length = 2;}, throws(Error));
 		}
 		
 		[Test]
@@ -92,6 +112,9 @@ package it.sharpedge.navigator
 			var a : NavigationState = new NavigationState("anyState/*/subState/*/");
 			var b : NavigationState = new NavigationState("anyOtherState/replaceState/subOtherState/replaceSubState/");	
 			assertThat("mask a with b", a.mask(b).path, equalTo(new NavigationState("anyState/replaceState/subState/replaceSubState/").path));
+			
+			var c:NavigationState = b.mask(null);
+			assertThat("Mask with null source return a clone", b.path, equalTo(c.path));
 		}
 		
 		[Test]
