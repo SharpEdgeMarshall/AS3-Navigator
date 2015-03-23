@@ -20,6 +20,7 @@ package it.sharpedge.navigator
 		private var b : NavigationState;
 		private var c : NavigationState;
 		private var d : NavigationState;
+		private var e : NavigationState;
 		
 		[Before]
 		public function initNavigator() : void {
@@ -36,6 +37,11 @@ package it.sharpedge.navigator
 		{
 			navigator.clearMappings();
 			navigator = null;
+			
+			a.dispose();
+			b.dispose();
+			c.dispose();
+			d.dispose();
 		}
 		
 		[Test]
@@ -67,13 +73,31 @@ package it.sharpedge.navigator
 		}
 		
 		[Test]
+		public function wildcardMapping() : void {
+			
+			var tsh:TestSyncHook = new TestSyncHook();
+			navigator.onExitFrom(a).to(d).addHooks(tsh);
+			navigator.onEnterTo(d).from(a).addHooks(tsh);
+			
+			navigator.request(d.mask(b));
+
+			assertThat("Wildcard match", tsh.called, equalTo(2));
+		}
+
+		
+		[Test]
 		public function redirect() : void {
 			
 			navigator.onExitFrom(a).to(b).redirectTo(c);
+			navigator.onEnterTo(a).from(c).redirectTo(b);
 			
 			navigator.request(b);
 
 			assertThat(navigator.currentState.path, equalTo(c.path));
+			
+			navigator.request(a);
+			
+			assertThat(navigator.currentState.path, equalTo(b.path));
 		}
 		
 		[Test]

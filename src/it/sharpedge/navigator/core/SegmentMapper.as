@@ -18,7 +18,7 @@ package it.sharpedge.navigator.core
 		internal var _stateSegment:String;
 		
 		// Parent SegmentMapping
-		internal var _parent:SegmentMapper = null;
+		private var _parent:SegmentMapper = null;
 		
 		// Sub SegmentMappers
 		internal var _subMappers:Dictionary = new Dictionary();
@@ -29,6 +29,11 @@ package it.sharpedge.navigator.core
 		private var _stateMapping : StateMapping = new StateMapping();
 
 		
+		public function get parent():SegmentMapper
+		{
+			return _parent;
+		}
+
 		public function get path():String {
 			if( _parent )
 				return _parent.path + _stateSegment + NavigationState.DELIMITER;
@@ -81,18 +86,19 @@ package it.sharpedge.navigator.core
 		*/
 		navigator function getMatchingStateMapping( segments:Array, complementarySegments:Array, result:StateMapping ) : void {
 			//populate result of StateMapping objects going recursive looking for matching path			
-			//TODO: complete GLOBE Handling
+			
 			//Still searching an endpoint
 			if( segments.length != 0){	
+				// TODO complete GLOBE Handling
 				// if GLOBE add StateMapping
-				if(DW_STATE.equals( NavigationState.make(_stateSegment) )){
+				/*if(DW_STATE.equals( NavigationState.make(_stateSegment) )){
 					// Add general mapping
 					result.concat( _stateMapping );
 					
 					// Search for specific mapping
 					if(complementarySegments && _complementaryMappers)
 						_complementaryMappers.getMatchingStateMapping(complementarySegments, null, result);
-				}
+				}*/
 				
 				segments = segments.concat(); // clone for safe shifting
 				var segment:String = segments.shift();
