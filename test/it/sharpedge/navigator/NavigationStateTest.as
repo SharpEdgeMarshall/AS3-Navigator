@@ -1,6 +1,6 @@
 package it.sharpedge.navigator
 {
-	import it.sharpedge.navigator.api.NavigationState;
+	import it.sharpedge.navigator.core.NavigationState;
 	import it.sharpedge.navigator.core.NavigationStatePool;
 	
 	import org.hamcrest.assertThat;

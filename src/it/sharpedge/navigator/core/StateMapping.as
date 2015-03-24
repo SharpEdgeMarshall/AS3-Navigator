@@ -1,6 +1,5 @@
 package it.sharpedge.navigator.core
 {
-	import it.sharpedge.navigator.api.NavigationState;
 
 	public class StateMapping
 	{

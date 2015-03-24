@@ -3,7 +3,6 @@ package it.sharpedge.navigator.core
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	
-	import it.sharpedge.navigator.api.NavigationState;
 	import it.sharpedge.navigator.core.ns.navigator;
 	import it.sharpedge.navigator.core.tasks.ExecuteEnterGuardsTask;
 	import it.sharpedge.navigator.core.tasks.ExecuteEnterHooksTask;
@@ -136,7 +135,7 @@ package it.sharpedge.navigator.core
 			// Create State
 			_requestedState = NavigationState.make( stateOrPath );
 			
-			var navEvent : NavigatorStateEvent = new NavigatorStateEvent( NavigatorStateEvent.STATE_REQUESTED, _currentState, _requestedState );
+			var navEvent : NavigatorStateEvent = new NavigatorStateEvent( NavigatorStateEvent.REQUESTED, _currentState, _requestedState );
 			dispatchEvent(navEvent);
 			
 			// Start Router

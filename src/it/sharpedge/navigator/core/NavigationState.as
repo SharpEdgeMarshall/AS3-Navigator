@@ -1,6 +1,5 @@
-package it.sharpedge.navigator.api
+package it.sharpedge.navigator.core
 {
-	import it.sharpedge.navigator.core.NavigationStatePool;
 	
 
 	public class NavigationState

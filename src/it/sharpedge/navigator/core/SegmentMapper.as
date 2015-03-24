@@ -2,7 +2,6 @@ package it.sharpedge.navigator.core
 {
 	import flash.utils.Dictionary;
 	
-	import it.sharpedge.navigator.api.NavigationState;
 	import it.sharpedge.navigator.core.ns.navigator;
 	import it.sharpedge.navigator.dsl.IEnterSegmentMapper;
 	import it.sharpedge.navigator.dsl.IExitSegmentMapper;

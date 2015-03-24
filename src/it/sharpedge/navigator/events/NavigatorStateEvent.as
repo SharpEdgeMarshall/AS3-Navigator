@@ -2,16 +2,16 @@ package it.sharpedge.navigator.events
 {
 	import flash.events.Event;
 	
-	import it.sharpedge.navigator.api.NavigationState;
+	import it.sharpedge.navigator.core.NavigationState;
 	
 	public class NavigatorStateEvent extends Event
 	{		
-		public static const STATE_REQUESTED : String = "STATE_REQUESTED";
-		public static const STATE_REDIRECTING : String = "STATE_REDIRECTING";
-		public static const GUARD_BLOCK : String = "GUARD_BLOCK";
-		public static const STATE_CHANGING : String = "STATE_CHANGING";
-		public static const STATE_CHANGED : String = "STATE_CHANGED";
-		public static const COMPLETED : String = "COMPLETED";
+		public static const REQUESTED : String = "ns_REQUESTED";
+		public static const REDIRECTING : String = "ns_REDIRECTING";
+		public static const BLOCKED : String = "ns_BLOCKED";
+		public static const CHANGING : String = "ns_CHANGING";
+		public static const CHANGED : String = "ns_CHANGED";
+		public static const COMPLETED : String = "ns_COMPLETED";
 		
 		public function get newState () : NavigationState { return _newState; }
 		public function get oldState () : NavigationState { return _oldState; }

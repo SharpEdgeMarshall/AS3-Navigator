@@ -1,6 +1,6 @@
 package it.sharpedge.navigator.core.tasks.base
 {
-	import it.sharpedge.navigator.api.NavigationState;
+	import it.sharpedge.navigator.core.NavigationState;
 	import it.sharpedge.navigator.core.Navigator;
 	import it.sharpedge.navigator.core.RoutingQueue;
 	import it.sharpedge.navigator.core.StateMapping;
@@ -32,7 +32,7 @@ package it.sharpedge.navigator.core.tasks.base
 				
 				Navigator.logger.info("Redirecting: " + req + " -> " + mapping.redirectTo );
 				// Dispatch REIDIRECT Event
-				var redEvent : NavigatorStateEvent = new NavigatorStateEvent( NavigatorStateEvent.STATE_REDIRECTING, cur, mapping.redirectTo );
+				var redEvent : NavigatorStateEvent = new NavigatorStateEvent( NavigatorStateEvent.REDIRECTING, cur, mapping.redirectTo );
 				_nav.dispatchEvent(redEvent);
 				
 				// Restart routing
