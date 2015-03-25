@@ -111,12 +111,22 @@ package it.sharpedge.navigator
 		public function syncHook() : void {
 			
 			var hook:TestSyncHook = new TestSyncHook();
+			var called:int = 0;
 			
 			navigator.onExitFrom(a).to(b).addHooks(hook);
+			navigator.onExitFrom(b).to(c).addHooks(TestSyncHook);
+			navigator.onExitFrom(c).to(a).addHooks(
+				function():void{
+					called++;
+				});
 			
-			navigator.request(b);
-			
+			navigator.request(b);			
 			assertThat("Hook has been called", hook.called, equalTo(1));
+			
+			navigator.request(c);
+			
+			navigator.request(a);
+			assertThat("Hook has been called", called, equalTo(1));
 		}
 		
 		[Test(async)]
@@ -150,9 +160,16 @@ package it.sharpedge.navigator
 			
 			var guardPass:TestSyncGuard = new TestSyncGuard(true);
 			var guardFail:TestSyncGuard = new TestSyncGuard(false);
+			var called:int = 0;
 			
 			navigator.onExitFrom(a).to(b).addGuards(guardPass);
-			navigator.onExitFrom(b).to(a).addGuards(guardFail);
+			navigator.onEnterTo(a).from(b).addGuards(guardFail);
+			navigator.onEnterTo(c).from(b).addGuards(
+				function():Boolean{
+					called++;
+					return true;
+				});
+			navigator.onEnterTo(b).from(c).addGuards(TestSyncGuard);
 			
 			navigator.request(b);
 			assertThat("Guard has been called", guardPass.called, equalTo(1));
@@ -161,6 +178,13 @@ package it.sharpedge.navigator
 			navigator.request(a);
 			assertThat("Guard has been called", guardFail.called, equalTo(1));
 			assertThat("Guard has blocked the request", navigator.currentState.path, equalTo(b.path));
+			
+			navigator.request(c);
+			assertThat("Guard has been called", called, equalTo(1));
+			assertThat("Guard has approved the request", navigator.currentState.path, equalTo(c.path));
+			
+			navigator.request(b);
+			assertThat("Guard has blocked the request", navigator.currentState.path, equalTo(c.path));
 		}
 		
 		[Test(async)]

@@ -7,7 +7,7 @@ package it.sharpedge.navigator.guards
 		private var _called:int = 0;
 		private var _willPass:Boolean;
 		
-		public function TestSyncGuard(willPass:Boolean)
+		public function TestSyncGuard(willPass:Boolean=false)
 		{
 			_willPass = willPass;
 		}
