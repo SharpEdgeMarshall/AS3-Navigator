@@ -1,10 +1,12 @@
 package it.sharpedge.navigator.api
 {
+	import flash.events.IEventDispatcher;
+	
 	import it.sharpedge.navigator.core.NavigationState;
 	import it.sharpedge.navigator.dsl.IEnterSegmentMapper;
 	import it.sharpedge.navigator.dsl.IExitSegmentMapper;
 
-	public interface INavigator
+	public interface INavigator extends IEventDispatcher
 	{
 		
 		function get currentState():NavigationState;
