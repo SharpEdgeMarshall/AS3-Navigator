@@ -31,7 +31,7 @@ package it.sharpedge.navigator.core.tasks.base
 				router.reset();
 				
 				Navigator.logger.info("Redirecting: " + req + " -> " + mapping.redirectTo );
-				// Dispatch REIDIRECT Event
+				// Dispatch REDIRECT Event
 				var redEvent : NavigatorStateEvent = new NavigatorStateEvent( NavigatorStateEvent.REDIRECTING, cur, mapping.redirectTo );
 				_nav.dispatchEvent(redEvent);
 				

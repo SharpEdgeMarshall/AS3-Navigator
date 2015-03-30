@@ -3,6 +3,7 @@ package it.sharpedge.navigator.core
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	
+	import it.sharpedge.navigator.api.INavigator;
 	import it.sharpedge.navigator.core.ns.navigator;
 	import it.sharpedge.navigator.core.tasks.ExecuteEnterGuardsTask;
 	import it.sharpedge.navigator.core.tasks.ExecuteEnterHooksTask;
@@ -22,7 +23,7 @@ package it.sharpedge.navigator.core
 
 	use namespace navigator;
 	
-	public class Navigator extends EventDispatcher
+	public class Navigator extends EventDispatcher implements INavigator
 	{	
 		private static var _logger:ILogger = new TraceLogger();
 		
@@ -79,7 +80,7 @@ package it.sharpedge.navigator.core
 			_router.add(new ExecuteExitGuardsTask());
 			_router.add(new ExecuteEnterGuardsTask());
 			_router.add(new ExecuteExitHooksTask());
-			_router.add(new SwitchStatesTask());
+			_router.add(new SwitchStatesTask(this));
 			_router.add(new ExecuteEnterHooksTask());
 			
 			_router.addEventListener( RoutingQueueEvent.COMPLETE, onRoutingComplete );
