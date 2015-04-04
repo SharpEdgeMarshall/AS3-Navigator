@@ -10,7 +10,7 @@ package it.sharpedge.navigator.api
 	{
 		
 		function get currentState():NavigationState;
-		function get running():Boolean;
+		function get isRunning():Boolean;
 		
 		function clearMappings():void;
 		function onEnterTo( stateOrPath:* ):IEnterSegmentMapper;

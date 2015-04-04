@@ -56,7 +56,7 @@ package it.sharpedge.navigator.core
 		/**
 		 * Get the current running state
 		 */
-		public function get running() : Boolean {
+		public function get isRunning() : Boolean {
 			
 			return _router.running;
 		}
@@ -124,12 +124,12 @@ package it.sharpedge.navigator.core
 		public function request( stateOrPath:* ):void {
 			
 			if (stateOrPath == null) {
-				logger.error("Requested a null state. Aborting request.");
+				logger.warn("Requested a null state. Aborting request.");
 				return;
 			}
 			
 			if(_router.running){				
-				logger.error("Cannot handle requests while a request is already being processed");
+				logger.warn("Cannot handle requests while a request is already being processed");
 				return;
 			}
 			

@@ -41,7 +41,7 @@ package it.sharpedge.navigator.core
 			var idx:int = _tasks.indexOf( task );
 			if(idx == -1) return;
 			
-			_tasks.slice( idx, 1 );
+			_tasks.splice( idx, 1 );
 		}
 		
 		public function run( currentState:NavigationState, requestedState:NavigationState ):void {

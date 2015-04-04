@@ -1,5 +1,6 @@
 package it.sharpedge.navigator
 {
+	import it.sharpedge.navigator.api.INavigator;
 	import it.sharpedge.navigator.core.NavigationState;
 	import it.sharpedge.navigator.core.Navigator;
 	import it.sharpedge.navigator.core.ns.navigator;
@@ -14,12 +15,16 @@ package it.sharpedge.navigator
 	import org.flexunit.async.Async;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
+	import org.hamcrest.object.instanceOf;
+	import org.hamcrest.object.isFalse;
+	import org.hamcrest.object.isTrue;
 	
 	use namespace navigator;
 
 	public class NavigationTest
 	{
-		private var navigator:Navigator;
+		private var navigator:INavigator;
+		private var logger:CountLogger;
 		private var a : NavigationState;			
 		private var b : NavigationState;
 		private var c : NavigationState;
@@ -29,7 +34,7 @@ package it.sharpedge.navigator
 		[Before]
 		public function initNavigator() : void {
 			navigator = new Navigator("/");
-			Navigator.logger = new CountLogger();
+			Navigator.logger = logger = new CountLogger();
 			
 			a = NavigationState.make("/");			
 			b = NavigationState.make("/anyState/");
@@ -56,7 +61,7 @@ package it.sharpedge.navigator
 			assertThat("The currentState changed to request state", navigator.currentState.path, equalTo(b.path));
 			
 			navigator.request(null);
-			assertThat("null request fails", (Navigator.logger as CountLogger)._error, equalTo(1));
+			assertThat("null request fails", logger._warn, equalTo(1));
 		}
 		
 		[Test]
@@ -169,6 +174,11 @@ package it.sharpedge.navigator
 					called++;
 					return true;
 				});
+			navigator.onEnterTo(a).from(c).addGuards(
+				function():Boolean{
+					called++;
+					return false;
+				});
 			navigator.onEnterTo(b).from(c).addGuards(TestSyncGuard);
 			
 			navigator.request(b);
@@ -185,6 +195,42 @@ package it.sharpedge.navigator
 			
 			navigator.request(b);
 			assertThat("Guard has blocked the request", navigator.currentState.path, equalTo(c.path));
+			
+			navigator.request(a);
+			assertThat("Guard has blocked the request", navigator.currentState.path, equalTo(c.path));
+		}
+		
+		[Test(async)]
+		public function isRunning() : void {
+			
+			var guardPass:TestAsyncGuard = new TestAsyncGuard(true);
+			
+			navigator.onExitFrom(a).to(b).addGuards(guardPass);
+			
+			navigator.addEventListener( NavigatorStateEvent.COMPLETED, 
+				Async.asyncHandler(
+					this,
+					function( ev:NavigatorStateEvent, guardPass:TestAsyncGuard ):void{						
+						assertThat("Navigator is not running", navigator.isRunning, isFalse());
+					}, 
+					500, 
+					guardPass, 
+					function():void{
+						Assert.fail( "Timeout" );
+					}),
+				false,
+				0,
+				true
+			);			
+			
+			navigator.request(b);
+			assertThat("Navigator is running", navigator.isRunning, isTrue());
+			
+			navigator.clearMappings();
+			assertThat("ClearMappings fails", logger._warn, equalTo(1));
+			
+			navigator.request(c);
+			assertThat("Rquest fails", logger._warn, equalTo(2));
 		}
 		
 		[Test(async)]
@@ -239,6 +285,13 @@ package it.sharpedge.navigator
 			);			
 			
 			navigator.request(b);			
+		}
+		
+		[Test]
+		public function navStateEvent() : void {
+			var event:NavigatorStateEvent = new NavigatorStateEvent(NavigatorStateEvent.COMPLETED,a,b);
+			
+			assertThat("Clone is working", event.clone(), instanceOf(NavigatorStateEvent));
 		}
 	}
 }

@@ -1,12 +1,15 @@
 package it.sharpedge.navigator
 {
 	import it.sharpedge.navigator.debug.CountLogger;
+	import it.sharpedge.navigator.debug.ILogger;
 	
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
 
 	public class TraceLoggerTest
 	{
+		
+		private var ilogger:ILogger;
 		private var logger:CountLogger = new CountLogger();
 		
 		[Before]

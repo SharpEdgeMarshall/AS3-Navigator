@@ -5,8 +5,8 @@ package it.sharpedge.navigator
 	import it.sharpedge.navigator.core.NavigatorHistory;
 	
 	import org.hamcrest.assertThat;
-	import org.hamcrest.object.IsNullMatcher;
 	import org.hamcrest.object.equalTo;
+	import org.hamcrest.object.isFalse;
 	import org.hamcrest.object.nullValue;
 
 	public class HistoryTest
@@ -80,6 +80,8 @@ package it.sharpedge.navigator
 			navHistory.back();
 			
 			assertThat("Current State is a", navigator.currentState.path, equalTo(a.path));
+			
+			assertThat("No more previous States", navHistory.back(), isFalse());
 		}
 		
 		[Test]
@@ -96,6 +98,8 @@ package it.sharpedge.navigator
 			navHistory.forward();
 			
 			assertThat("Current State is b", navigator.currentState.path, equalTo(b.path));
+			
+			assertThat("No more forward States", navHistory.forward(), isFalse());
 		}
 		
 		[Test]
@@ -108,6 +112,8 @@ package it.sharpedge.navigator
 			assertThat("Get State with Position", res.path, equalTo(a.path));
 			
 			assertThat("Get Position with State", navHistory.getPositionByState(res), equalTo(1));
+			
+			assertThat("Get State with wrong Position returns null", navHistory.getStateByPosition(20), nullValue());			
 		}
 		
 		[Test]

@@ -2,6 +2,8 @@ package it.sharpedge.navigator.core.async
 {	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	
+	import it.sharpedge.navigator.api.IGuardAsync;
 
 	public class GuardsAsyncHandler extends EventDispatcher
 	{
@@ -9,7 +11,13 @@ package it.sharpedge.navigator.core.async
 		
 		private var _busy:Boolean = false;
 		private var _valid:Boolean = true;
+		private var _invalidGuards : Vector.<IGuardAsync> = new Vector.<IGuardAsync>();
 		
+		public function get invalidGuards():Vector.<IGuardAsync>
+		{
+			return _invalidGuards;
+		}
+
 		public function get busy():Boolean
 		{
 			return _busy;
@@ -43,6 +51,7 @@ package it.sharpedge.navigator.core.async
 				if(!valid){
 					_busy = false;
 					_valid = false;
+					_invalidGuards.push(delegate.guard);
 					dispatchEvent( new Event( Event.COMPLETE ) );
 				}				
 				

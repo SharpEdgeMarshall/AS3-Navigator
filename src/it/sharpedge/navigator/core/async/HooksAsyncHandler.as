@@ -7,8 +7,7 @@ package it.sharpedge.navigator.core.async
 	{
 		private var _delegates : Vector.<HooksAsyncDelegate> = new Vector.<HooksAsyncDelegate>();
 		
-		private var _busy:Boolean = false;
-		private var _valid:Boolean = true;
+		private var _busy:Boolean = false;		
 		
 		public function get busy():Boolean
 		{
