@@ -4,6 +4,7 @@ package it.sharpedge.navigator.guards
 	import flash.utils.Timer;
 	
 	import it.sharpedge.navigator.api.IGuardAsync;
+	import it.sharpedge.navigator.core.NavigationState;
 	
 	public class TestAsyncGuard implements IGuardAsync
 	{
@@ -25,7 +26,7 @@ package it.sharpedge.navigator.guards
 			return _called;
 		}
 
-		public function approve(callback:Function):void
+		public function approve( from:NavigationState, to:NavigationState, callback:Function):void
 		{
 			_callback = callback;
 			_timer.start();

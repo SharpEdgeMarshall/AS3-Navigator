@@ -1,6 +1,7 @@
 package it.sharpedge.navigator.guards
 {
 	import it.sharpedge.navigator.api.IGuardSync;
+	import it.sharpedge.navigator.core.NavigationState;
 	
 	public class TestSyncGuard implements IGuardSync
 	{
@@ -17,7 +18,7 @@ package it.sharpedge.navigator.guards
 			return _called;
 		}
 
-		public function approve():Boolean
+		public function approve( from:NavigationState, to:NavigationState ):Boolean
 		{
 			_called++;
 			return _willPass;

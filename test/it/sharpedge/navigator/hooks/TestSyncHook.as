@@ -1,6 +1,7 @@
 package it.sharpedge.navigator.hooks
 {
 	import it.sharpedge.navigator.api.IHookSync;
+	import it.sharpedge.navigator.core.NavigationState;
 	
 	public class TestSyncHook implements IHookSync
 	{
@@ -15,7 +16,7 @@ package it.sharpedge.navigator.hooks
 			return _called;
 		}
 
-		public function execute():void
+		public function execute( from:NavigationState, to:NavigationState ):void
 		{
 			_called++;
 		}

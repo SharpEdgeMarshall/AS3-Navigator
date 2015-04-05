@@ -1,7 +1,9 @@
 package it.sharpedge.navigator.api
 {
+	import it.sharpedge.navigator.core.NavigationState;
+
 	public interface IGuardAsync
 	{
-		function approve( callback:Function ):void;
+		function approve( from:NavigationState, to:NavigationState, callback:Function ):void;
 	}
 }

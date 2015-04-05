@@ -30,7 +30,7 @@ package it.sharpedge.navigator.core.tasks.base
 			for each( var guard:Object in mapping.guards ){					
 				if (guard is Function)
 				{
-					if ((guard as Function)())
+					if ((guard as Function)( router.currentState, router.requestedState ))
 						continue;
 					
 					invalidateRoute(router);
@@ -41,12 +41,12 @@ package it.sharpedge.navigator.core.tasks.base
 					guard = new (guard as Class);
 				}
 				
-				if( guard is IGuardSync && !guard.approve() ) {
+				if( guard is IGuardSync && !guard.approve( router.currentState, router.requestedState ) ) {
 					invalidateRoute(router);
 					return;
 				}else if(guard is IGuardAsync){
 					guardsAsyncHandler = guardsAsyncHandler || new GuardsAsyncHandler( );
-					(guard as IGuardAsync).approve( new GuardsAsyncDelegate( (guard as IGuardAsync), guardsAsyncHandler ).call );
+					(guard as IGuardAsync).approve( router.currentState, router.requestedState, new GuardsAsyncDelegate( (guard as IGuardAsync), guardsAsyncHandler ).call );
 				} 
 
 			}			

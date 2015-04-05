@@ -29,7 +29,7 @@ package it.sharpedge.navigator.core.tasks.base
 			for each( var hook:Object in mapping.hooks ){					
 				if (hook is Function)
 				{
-					(hook as Function)();
+					(hook as Function)( router.currentState, router.requestedState );
 					continue;
 				} 
 				else if (hook is Class)
@@ -38,10 +38,10 @@ package it.sharpedge.navigator.core.tasks.base
 				}
 				
 				if( hook is IHookSync ) {
-					( hook as IHookSync ).execute();
+					( hook as IHookSync ).execute( router.currentState, router.requestedState );
 				}else if(hook is IHookAsync){
 					hooksAsyncHandler = hooksAsyncHandler || new HooksAsyncHandler( );
-					(hook as IHookAsync).execute( new HooksAsyncDelegate( (hook as IHookAsync), hooksAsyncHandler ).call );
+					(hook as IHookAsync).execute( router.currentState, router.requestedState, new HooksAsyncDelegate( (hook as IHookAsync), hooksAsyncHandler ).call );
 				} 
 
 			}			

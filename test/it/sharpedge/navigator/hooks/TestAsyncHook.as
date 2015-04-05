@@ -4,6 +4,7 @@ package it.sharpedge.navigator.hooks
 	import flash.utils.Timer;
 	
 	import it.sharpedge.navigator.api.IHookAsync;
+	import it.sharpedge.navigator.core.NavigationState;
 	
 	public class TestAsyncHook implements IHookAsync
 	{
@@ -22,7 +23,7 @@ package it.sharpedge.navigator.hooks
 			return _called;
 		}
 		
-		public function execute(callback:Function):void
+		public function execute( from:NavigationState, to:NavigationState, callback:Function ):void
 		{
 			_callback = callback;
 			_timer.start();
