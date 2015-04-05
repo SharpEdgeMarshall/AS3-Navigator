@@ -16,10 +16,12 @@ TODO: write documentation.
 ```as3
 navigator = new Navigator("/");
 
-navigator.addEventListener(NavigatorStateEvent.STATE_REQUESTED, onNewRequest);
-navigator.addEventListener(NavigatorStateEvent.COMPLETE, onRequestCompleted);
-navigator.addEventListener(NavigatorStateEvent.STATE_REDIRECTING, onRedirect);
-navigator.addEventListener(NavigatorStateEvent.GUARD_BLOCK, onGuardBlock);
+navigator.addEventListener(NavigatorStateEvent.REQUESTED, onNewRequest);
+navigator.addEventListener(NavigatorStateEvent.REDIRECTING, onRedirect);
+navigator.addEventListener(NavigatorStateEvent.BLOCKED, onGuardBlock);
+navigator.addEventListener(NavigatorStateEvent.CHANGING, onStateChanging);
+navigator.addEventListener(NavigatorStateEvent.CHANGED, onStateChanged);
+navigator.addEventListener(NavigatorStateEvent.COMPLETED, onRequestCompleted);
 ```
 
 ## Configuration

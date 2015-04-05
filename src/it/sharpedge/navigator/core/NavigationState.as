@@ -87,7 +87,7 @@ package it.sharpedge.navigator.core
 		
 		/**
 		 * @return whether the path of the foreign state is contained by this state's path, wildcards may be used.
-		 * @example:
+		 * @example
 		 * 
 		 * 	a = new State("/bubble/gum/");
 		 * 	b = new State("/bubble/");
@@ -119,7 +119,7 @@ package it.sharpedge.navigator.core
 		
 		/**
 		 * Will test for equality between states. This comparison is wildcard safe!
-		 * @example: 
+		 * @example
 		 * 		a/b/c equals a/b/*
 		 */
 		public function equals( state:NavigationState ):Boolean {
