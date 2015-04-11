@@ -1,4 +1,4 @@
-# AS3-Navigator [![Build Status](https://travis-ci.org/SharpEdgeMarshall/AS3-Navigator.svg?branch=develop)](https://travis-ci.org/SharpEdgeMarshall/AS3-Navigator) [![Coverage Status](https://coveralls.io/repos/SharpEdgeMarshall/AS3-Navigator/badge.svg?branch=develop)](https://coveralls.io/r/SharpEdgeMarshall/AS3-Navigator?branch=develop)
+# AS3-Navigator [![Build Status](https://travis-ci.org/SharpEdgeMarshall/AS3-Navigator.svg?branch=master)](https://travis-ci.org/SharpEdgeMarshall/AS3-Navigator) [![Coverage Status](https://coveralls.io/repos/SharpEdgeMarshall/AS3-Navigator/badge.svg?branch=master)](https://coveralls.io/r/SharpEdgeMarshall/AS3-Navigator?branch=master)
 
 AS3-Navigator is a FSM with views control in mind, it offers:
 + Fluent API
