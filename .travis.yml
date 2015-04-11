@@ -8,7 +8,7 @@ env:
     secure:                         XVb2uqM+CZc9y32LIyiizmrJygA91AGrZyDo18nYCfvLZBHeZO2+ZeBlaZQTCjrE6nqlrtx/rTXz+BEw10dXROLOdFl5LXL3+nb1fzSvi7WZ5UZf3RqAlMz5iF2lXrpIB9YDkdzgydqZBSXuoAe+mUkesxO0cumftQpVtAsn6+s=
 before_script:
   - export "JAVA_HOME=`/usr/libexec/java_home`"
-  - sh getFpFromArchive.sh 'http://download.macromedia.com/pub/flashplayer/installers/archive/fp_16.0.0.305_archive.zip'
+  - sh .utility/getFpFromArchive.sh 'http://download.macromedia.com/pub/flashplayer/installers/archive/fp_16.0.0.305_archive.zip'
   - export PATH="Flash Player Debugger.app/Contents/MacOS":$PATH
   - cp Flash\ Player\ Debugger.app/Contents/MacOS/Flash\ Player\ Debugger Flash\ Player\ Debugger.app/Contents/MacOS/Flash\ Player
   - cp Flash\ Player\ Debugger.app/Contents/MacOS/Flash\ Player\ Debugger Flash\ Player\ Debugger.app/Contents/MacOS/flashplayer
