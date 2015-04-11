@@ -4,7 +4,6 @@ package it.sharpedge.navigator.core
 	import it.sharpedge.navigator.api.INavigatorHistory;
 	import it.sharpedge.navigator.events.NavigatorStateEvent;
 
-
 	public class NavigatorHistory implements INavigatorHistory {
 		// Default max history length
 		public static const MAX_HISTORY_LENGTH : int = 100;
@@ -39,7 +38,7 @@ package it.sharpedge.navigator.core
 		}
 		
 		/**
-		 * Dispose the NavigatorHistory
+		 * @inheritDoc
 		 */
 		public function dispose():void {
 			_navigator.removeEventListener(NavigatorStateEvent.CHANGED, handleStateChange);
@@ -47,31 +46,28 @@ package it.sharpedge.navigator.core
 		}
 		
 		/**
-		 * Set the maximum number of states
+		 * @inheritDoc
 		 */
 		public function set maxLength(value : int) : void {
 			_maxLength = value;
 		}
 		
 		/**
-		 * Get the maximum number of states
+		 * @inheritDoc
 		 */
 		public function get maxLength() : int {
 			return _maxLength;
 		}
 		
 		/**
-		 * Get an array with the states in the history
+		 * @inheritDoc
 		 */
 		public function get history() : Vector.<NavigationState> {
 			return _history;
 		}
 		
 		/**
-		 * Go back in the history and return that NavigationState
-		 * 
-		 * @param steps The number of steps to go back in history
-		 * @return The found state or null if no state was found
+		 * @inheritDoc
 		 */
 		public function getPreviousState(steps : int = 1) : NavigationState {
 			if (_historyPosition == _history.length - 1 || _history.length == 0) {
@@ -81,12 +77,9 @@ package it.sharpedge.navigator.core
 			var pos : int = Math.min(_history.length - 1, _historyPosition + steps);
 			return _history[pos];
 		}
-		
+
 		/**
-		 * Go forward in the history and return that NavigationState
-		 * 
-		 * @param steps The number of steps to go back in history
-		 * @return The found state or null if no state was found
+		 * @inheritDoc
 		 */
 		public function getNextState(steps : int = 1) : NavigationState {
 			if (_historyPosition == 0) {
@@ -98,18 +91,15 @@ package it.sharpedge.navigator.core
 		}
 		
 		/**
-		 * Clear up navigation history
+		 * @inheritDoc
 		 */
 		public function clearHistory() : void {
 			_history = new Vector.<NavigationState>();
 			_historyPosition = 1;
 		}
-		
+
 		/**
-		 * Go back in the history
-		 * 
-		 * @param steps The number of steps to go back in history
-		 * @return Returns false if there was no previous state
+		 * @inheritDoc
 		 */
 		public function back(steps : int = 1) : Boolean {
 			if (_historyPosition == _history.length - 1) {
@@ -122,10 +112,7 @@ package it.sharpedge.navigator.core
 		}
 		
 		/**
-		 * Go forward in the history
-		 * 
-		 * @param steps The number of steps to go forward in history
-		 * @return Returns false if there was no next state
+		 * @inheritDoc
 		 */
 		public function forward(steps : int = 1) : Boolean {
 			if (_historyPosition == 0) {
@@ -138,10 +125,7 @@ package it.sharpedge.navigator.core
 		}
 		
 		/**
-		 * Get the state by historyposition
-		 * 
-		 * @param position The position in history
-		 * @return The found state or null if no state was found
+		 * @inheritDoc
 		 */
 		public function getStateByPosition(position : int) : NavigationState {
 			if (position < 0 || position > _history.length - 1) {
@@ -151,10 +135,7 @@ package it.sharpedge.navigator.core
 		}
 		
 		/**
-		 * Get the first occurence of a state in the history
-		 * 
-		 * @param state The state in history
-		 * @return The found position or -1 if no position was found
+		 * @inheritDoc
 		 */
 		public function getPositionByState(state : NavigationState) : int {
 			return _history.indexOf(state);

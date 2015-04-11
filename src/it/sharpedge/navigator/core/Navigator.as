@@ -46,7 +46,7 @@ package it.sharpedge.navigator.core
 		private var _currentState:NavigationState;		
 
 		/**
-		 * Get the current state
+		 * @inheritDoc
 		 */
 		public function get currentState() : NavigationState {
 			
@@ -54,7 +54,7 @@ package it.sharpedge.navigator.core
 		}
 		
 		/**
-		 * Get the current running state
+		 * @inheritDoc
 		 */
 		public function get isRunning() : Boolean {
 			
@@ -88,7 +88,7 @@ package it.sharpedge.navigator.core
 		}
 		
 		/**
-		 * Remove all mappings
+		 * @inheritDoc
 		 */
 		public function clearMappings():void {
 			if( _router.running ) {
@@ -100,26 +100,21 @@ package it.sharpedge.navigator.core
 		}
 		
 		/**
-		 * Get an EnterStateMapping for that state
-		 * @param state The state that you want to map.
-		 * @return the mapping object so that you can continue the mapping.
+		 * @inheritDoc
 		 */
 		public function onEnterTo( stateOrPath:* ):IEnterSegmentMapper {			
 			return _enterMapper.getSegmentMapperFor( NavigationState.make(stateOrPath, false).segments );
 		}
 		
 		/**
-		 * Get an ExitStateMapping for that state
-		 * @param state The state that you want to map.
-		 * @return the mapping object so that you can continue the mapping.
+		 * @inheritDoc
 		 */
 		public function onExitFrom( stateOrPath:* ):IExitSegmentMapper {
 			return _exitMapper.getSegmentMapperFor( NavigationState.make(stateOrPath, false).segments );
 		}		
 		
 		/**
-		 * Request a new state
-		 * @param state The state that you want to navigate to.
+		 * @inheritDoc
 		 */
 		public function request( stateOrPath:* ):void {
 			
@@ -141,10 +136,11 @@ package it.sharpedge.navigator.core
 			
 			// Start Router
 			_router.run(_currentState, _requestedState);			
-		}
+		}	
 		
-		
-		
+		/**
+		 * @private
+		 */
 		protected function onRoutingComplete(event:Event):void
 		{
 			var navEvent : NavigatorStateEvent = new NavigatorStateEvent( NavigatorStateEvent.COMPLETED, _currentState, _requestedState );

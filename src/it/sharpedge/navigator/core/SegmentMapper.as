@@ -13,26 +13,42 @@ package it.sharpedge.navigator.core
 		
 		private static const DW_STATE:NavigationState = NavigationState.make(NavigationState.DOUBLE_WILDCARD);
 		
-		// The state segment this SegmentMapping belongs to
+		/**
+		 * @private
+		 * The state segment this SegmentMapping belongs to
+		 */ 
 		internal var _stateSegment:String;
 		
-		// Parent SegmentMapping
+		/**
+		 * Parent SegmentMapping
+		 */
 		private var _parent:SegmentMapper = null;
 		
-		// Sub SegmentMappers
+		/**
+		 * @private
+		 * Sub SegmentMappers
+		 */
 		internal var _subMappers:Dictionary = new Dictionary();
 		
-		// Complementary SegmentMappers
+		/**
+		 * @private
+		 * Complementary SegmentMappers
+		 */
 		internal var _complementaryMappers:SegmentMapper = null;
 		
 		private var _stateMapping : StateMapping = new StateMapping();
 
-		
+		/**
+		 * Get the parent SegmentMapper
+		 */
 		public function get parent():SegmentMapper
 		{
 			return _parent;
 		}
-
+		
+		/**
+		 * Get the full path corresponding to this SegmentMapper
+		 */
 		public function get path():String {
 			if( _parent )
 				return _parent.path + _stateSegment + NavigationState.DELIMITER;
@@ -127,7 +143,7 @@ package it.sharpedge.navigator.core
 		
 		/*
 		 * Clear mappings
-		 * @param subState Should go in deep cleaning also all subStates
+		 * @param subState Should go in deep cleaning also for all subStates
 		 */
 		public function clearMapping( clearSubStates:Boolean = false ):void {
 			
@@ -147,6 +163,7 @@ package it.sharpedge.navigator.core
 		
 		/*
 		 * Add a SubSegmentMapper
+		 * @param segmentMapper The segmentMapper to add as a child
 		 */
 		public function addSubSegmentMapper( segmentMapper:SegmentMapper ):void {
 			
@@ -158,7 +175,7 @@ package it.sharpedge.navigator.core
 		}
 		
 		/*
-		* Remove a SubSegmentMapper
+		* @param segmentMapper The segmentMapper to remove 
 		*/
 		public function removeSubSegmentMapper( segmentMapper:SegmentMapper ):void {
 			// TODO: dispatch error or log

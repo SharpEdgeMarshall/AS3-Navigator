@@ -35,7 +35,7 @@ package it.sharpedge.navigator.dsl
 		
 		/**
 		 * Set a redirect to another state
-		 * @param state The destination state.
+		 * @param state The destination state or null to remove redirect.
 		 */
 		function redirectTo( state:* = null ):void;
 		

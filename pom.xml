@@ -9,7 +9,7 @@
 	<name >AS3-Navigator</name >
 	<groupId>it.sharpedge</groupId>
 	<artifactId>navigator</artifactId>
-	<version>0.0.5</version>
+	<version>0.9.0</version>
 	<packaging>swc</packaging>
 	<url></url>
 
