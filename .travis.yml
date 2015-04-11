@@ -1,0 +1,28 @@
+language: objective-c
+sudo: false
+cache:
+  directories:
+  - "$HOME/.m2"
+ env:
+  global:
+    secure: XVb2uqM+CZc9y32LIyiizmrJygA91AGrZyDo18nYCfvLZBHeZO2+ZeBlaZQTCjrE6nqlrtx/rTXz+BEw10dXROLOdFl5LXL3+nb1fzSvi7WZ5UZf3RqAlMz5iF2lXrpIB9YDkdzgydqZBSXuoAe+mUkesxO0cumftQpVtAsn6+s=
+before_script:
+- export "JAVA_HOME=`/usr/libexec/java_home`"
+- sh getFpFromArchive.sh 'http://download.macromedia.com/pub/flashplayer/installers/archive/fp_16.0.0.305_archive.zip'
+- export PATH="Flash Player Debugger.app/Contents/MacOS":$PATH
+- cp Flash\ Player\ Debugger.app/Contents/MacOS/Flash\ Player\ Debugger Flash\ Player\
+  Debugger.app/Contents/MacOS/Flash\ Player
+- cp Flash\ Player\ Debugger.app/Contents/MacOS/Flash\ Player\ Debugger Flash\ Player\
+  Debugger.app/Contents/MacOS/flashplayer
+- mvn install:install-file -Dfile='./libs/flexunit-4.2.0-20140410-as3_4.12.0.swc'
+  -DgroupId='com.adobe.flexunit' -DartifactId='flexunit' -Dversion='4.2.0-20140410'
+  -Dpackaging=swc
+- mvn install:install-file -Dfile='./libs/hamcrest-as3-flex-1.1.3.swc' -DgroupId='org.hamcrest'
+  -DartifactId='hamcrest-as3' -Dversion='1.1.3' -Dpackaging=swc -Dclassifier=flex
+- mvn install:install-file -Dfile='./libs/mockolate-0.12.4-flex.swc' -Dversion='0.12.4'
+  -Dclassifier=flex -Dpackaging=swc -DgroupId=mockolate -DartifactId=mockolate
+script: mvn test
+after_success:
+- mvn coveralls:report
+- mvn flexmojos:asdoc
+- .utility/push-asdoc-to-gh-pages.sh
